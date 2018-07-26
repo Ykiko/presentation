@@ -1,5 +1,6 @@
 package com.example.conference.controller;
 
+import com.example.conference.entity.Person;
 import com.example.conference.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,12 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @org.springframework.stereotype.Controller
 
 public class Controller {
-    private Repository repository;
-
-    @Autowired
-    public Controller(Repository repository){
-        this.repository = repository;
-    }
 
     @Value("${welcome.message}")
     private String message;
