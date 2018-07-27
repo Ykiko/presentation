@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/style.css}"/>
+</head>
+<body>
+<h1>Profile Person</h1>
+<br><br>
+<a href="/startList">Start Page</a>
+<br><br>
+<table border="3">
+    <tr>
+        <td>Id</td>
+        <td th:text="${person.id}"></td>
+    </tr>
+    <tr>
+        <td>First Name</td>
+        <td th:text="${person.firstname}"></td>
+    </tr>
+    <tr>
+        <td>Last Name</td>
+        <td th:text="${person.lastname}"></td>
+    </tr>
+    <tr>
+        <td>Age</td>
+        <td th:text="${person.age}"></td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td th:text="${person.email}"></td>
+    </tr>
+    <tr>
+        <td>Login</td>
+        <td th:text="${person.username}"></td>
+    </tr>
+    <!--<tr>
+        <td>Role</td>
+        <td th:text="${person.roles}"></td>
+    </tr>-->
+    <tr>
+        <td>Delete</td>
+        <td><a th:href="@{/delete/{id}(id=${person.id})}">Delete</a></td>
+    </tr>
+    <tr>
+        <td>Rename</td>
+        <td><a th:href="@{/updatePer/{id}(id=${person.id})}">Rename</a></td>
+    </tr>
+</table>
+<br>
+</body>
+</html>
