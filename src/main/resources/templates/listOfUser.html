@@ -9,46 +9,34 @@
     <link rel="stylesheet" type="text/css" th:href="@{/static/style.css}"/>
 </head>
 <body>
-<h1>Profile Person</h1>
+<h1>User Profile</h1>
 <br><br>
 <a href="/startList">Start Page</a>
 <br><br>
 <table border="3">
     <tr>
         <td>Id</td>
-        <td th:text="${person.id}"></td>
+        <td th:text="${user.id}"></td>
     </tr>
     <tr>
         <td>First Name</td>
-        <td th:text="${person.firstname}"></td>
+        <td th:text="${user.firstname}"></td>
     </tr>
     <tr>
         <td>Last Name</td>
-        <td th:text="${person.lastname}"></td>
+        <td th:text="${user.lastname}"></td>
     </tr>
     <tr>
         <td>Age</td>
-        <td th:text="${person.age}"></td>
+        <td th:text="${user.age}"></td>
     </tr>
     <tr>
         <td>Email</td>
-        <td th:text="${person.email}"></td>
+        <td th:text="${user.email}"></td>
     </tr>
     <tr>
         <td>Login</td>
-        <td th:text="${person.username}"></td>
-    </tr>
-    <!--<tr>
-        <td>Role</td>
-        <td th:text="${person.roles}"></td>
-    </tr>-->
-    <tr>
-        <td>Delete</td>
-        <td><a th:href="@{/delete/{id}(id=${person.id})}">Delete</a></td>
-    </tr>
-    <tr>
-        <td>Rename</td>
-        <td><a th:href="@{/updatePer/{id}(id=${person.id})}">Rename</a></td>
+        <td th:text="${user.username}"></td>
     </tr>
 </table>
 <br>
