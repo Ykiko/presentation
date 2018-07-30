@@ -1,6 +1,5 @@
 package com.example.conference.controller;
 
-import com.example.conference.entity.User;
 import com.example.conference.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +20,7 @@ public class ControlListUser {
 
     @RequestMapping(value = {"/listOfUser/{id}"}, method = RequestMethod.GET)
     public String listOfUser(@PathVariable ("id") Long id, Model model) {
-        model.addAttribute("user", repository.findById(id));
+        model.addAttribute("user", repository.getById(id));
         return "listOfUser";
     }
 }
