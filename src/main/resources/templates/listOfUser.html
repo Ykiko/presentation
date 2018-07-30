@@ -13,6 +13,8 @@
 <br><br>
 <a href="/startList">Start Page</a>
 <br><br>
+<a th:href="@{/updateUser/{id}(id=${user.id})}">Update User</a>
+<br><br>
 <table border="3">
     <tr>
         <td>Id</td>
@@ -37,6 +39,10 @@
     <tr>
         <td>Login</td>
         <td th:text="${user.username}"></td>
+    </tr>
+    <tr>
+        <td>Role</td>
+        <td th:text="${user.role}"></td>
     </tr>
 </table>
 <br>

@@ -1,12 +1,18 @@
 package com.example.conference.controller;
 
+import com.example.conference.entity.Role;
+import com.example.conference.entity.User;
 import com.example.conference.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 @Controller
 public class ControlListUser {
@@ -22,5 +28,25 @@ public class ControlListUser {
     public String listOfUser(@PathVariable ("id") Long id, Model model) {
         model.addAttribute("user", repository.getById(id));
         return "listOfUser";
+    }
+
+    @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.GET)
+    public String updateUser(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user", repository.getById(id));
+        model.addAttribute("roles", Arrays.asList(Role.role1.toString(), Role.role2.toString(), Role.role3.toString()));
+        return "settingUser";
+    }
+
+    @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.POST)
+    public String saveUser(@PathVariable("id") Long id,
+                           @ModelAttribute("user") User user) {
+        Optional<User> editUser = repository.findById(id);
+        if (editUser.isPresent()) {
+            User currentUser = editUser.get();
+            user.setId(currentUser.getId());
+            user.setPassword(currentUser.getPassword());
+            repository.save(user);
+        }
+        return "redirect:/listOfUser/" + user.getId();
     }
 }

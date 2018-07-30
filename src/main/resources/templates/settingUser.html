@@ -1,10 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Update User</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
+<h1> Update a User: </h1>
 
+<form th:action="@{/updateUser/{id}(id=${user.id})}"
+      th:object="${user}" method="post">
+    First Name:
+    <input type="text" th:field="*{firstname}" th:value="${user.firstname}" required/>
+    <br/><br/>
+    Last Name:
+    <input type="text" th:field="*{lastname}" th:value="${user.lastname}" required/>
+    <br/><br/>
+    Age:
+    <input type="text" th:field="*{age}" th:value="${user.age}" required/>
+    <br/><br/>
+    Email
+    <input type="text" th:field="*{email}" th:value="${user.email}" required/>
+    <br/><br/>
+    Login
+    <input type="text" th:field="*{username}" th:value="${user.username}" required/>
+    <br/><br/>
+    <table class="table table-bordered">
+        <tr th:each="role : ${roles}"
+        <td>
+            <input type="checkbox"
+                   th:field="${user.roles}"
+                   th:checked="${true}"
+                   th:value="${role}"
+            <label th:text="${role}"></label>
+        </td>
+    </table>
+    <br/><br/>
+    <input type="submit" value="Create"/>
+</form>
+<div th:if="${errorMessage}" th:utext="${errorMessage}"
+     style="color:red; font-style:italic;">
+
+</div>
 </body>
 </html>
