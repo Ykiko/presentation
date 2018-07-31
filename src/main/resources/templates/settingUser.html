@@ -28,14 +28,13 @@
     <input type="text" th:field="*{username}" th:value="${user.username}" required/>
     <br/><br/>
     <table class="table table-bordered">
-        <tr th:each="role : ${roles}"
-        <td>
-            <input type="checkbox"
-                   th:field="${user.roles}"
-                   th:checked="${true}"
-                   th:value="${role}"
-            <label th:text="${role}"></label>
-        </td>
+            <select th:field="*{role}" th:value="*{role}" required>
+                <option th:each="role : ${T(com.example.conference.entity.ROLE).values()}"
+                        th:field="*{role}"
+                        th:value="${role}"
+                        th:text="${role.getRole()}">
+                </option>
+            </select>
     </table>
     <br/><br/>
     <input type="submit" value="Create"/>

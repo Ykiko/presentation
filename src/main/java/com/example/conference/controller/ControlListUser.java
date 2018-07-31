@@ -1,6 +1,6 @@
 package com.example.conference.controller;
 
-import com.example.conference.entity.Role;
+import com.example.conference.entity.ROLE;
 import com.example.conference.entity.User;
 import com.example.conference.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class ControlListUser {
     @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.GET)
     public String updateUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", repository.getById(id));
-        model.addAttribute("roles", Arrays.asList(Role.role1.toString(), Role.role2.toString(), Role.role3.toString()));
+        model.addAttribute("roles", Arrays.asList(ROLE.ADMIN.toString(), ROLE.PRESENTER.toString(), ROLE.LISTENER.toString()));
         return "settingUser";
     }
 
