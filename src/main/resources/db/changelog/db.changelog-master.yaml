@@ -1,0 +1,39 @@
+databaseChangeLog:
+- changeSet:
+    id: 1533049234630-1
+    author: grigory-yki (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: user_pkey
+            name: id
+            type: BIGSERIAL
+        - column:
+            constraints:
+              nullable: false
+            name: age
+            type: INTEGER
+        - column:
+            name: email
+            type: VARCHAR(255)
+        - column:
+            name: firstname
+            type: VARCHAR(255)
+        - column:
+            name: lastname
+            type: VARCHAR(255)
+        - column:
+            name: password
+            type: VARCHAR(255)
+        - column:
+            name: role
+            type: INTEGER
+        - column:
+            name: username
+            type: VARCHAR(255)
+        tableName: user
+
