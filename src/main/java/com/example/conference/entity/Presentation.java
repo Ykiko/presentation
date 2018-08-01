@@ -9,18 +9,27 @@ public class Presentation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String namePresentatoin;
+    private String namePresentation;
     private Long id;
 
     public Presentation() {
     }
 
-    public String getNamePresentatoin() {
-        return namePresentatoin;
+    public Presentation(String namePresentation) {
+        this.namePresentation = namePresentation;
     }
 
-    public void setNamePresentatoin(String namePresentatoin) {
-        this.namePresentatoin = namePresentatoin;
+    @Override
+    public String toString() {
+        return String.format("Presentation[id=%d, namePresentation='%s']");
+    }
+
+    public String getNamePresentation() {
+        return namePresentation;
+    }
+
+    public void setNamePresentation(String namePresentation) {
+        this.namePresentation = namePresentation;
     }
 
     public Long getId() {

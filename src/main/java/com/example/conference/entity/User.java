@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "user")
 public class User implements Serializable {
 
     private ROLE role = ROLE.LISTENER;

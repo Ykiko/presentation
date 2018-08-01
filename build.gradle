@@ -34,7 +34,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework.boot:spring-boot-starter-web')
     runtime('com.h2database:h2')
-    runtime('org.postgresql:postgresql')
+    //runtime('org.postgresql:postgresql')
     compile('org.liquibase:liquibase-core')
     compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.boot:spring-boot-starter-test')

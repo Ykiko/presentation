@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>Start List</title>
+    <title>schedule</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
@@ -12,12 +12,13 @@
 <br/><br/>
 <a href="listOfReports">Reports</a>
 <br/><br/>
-<a href="listOfUser">Persons</a>
+<a href="ListOfUsers">Users</a>
 
 <br/><br/>
 <div>
     <table border="3">
         <tr>
+            <th> Presenter </th>
             <th> Presentation title </th>
             <th> Classroom </th>
             <th> Time </th>
@@ -26,9 +27,3 @@
 </div>
 </body>
 </html>
-<!--
-<tr th:each ="person : ${persons}" >
-    <td th:utext="${person.firstName}">...</td>
-    <td th:utext="${person.lastName}">...</td>
-    <td><a th:href="@{/profilePer/{id}(id=${person.id})}">profile</a></td>
-</tr>-->

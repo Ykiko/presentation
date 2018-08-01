@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Users</title>
+</head>
+<body>
+<h1>Users List</h1>
+<a href="startList.html"> Start List </a>
+<br/><br/>
+<div>
+    <table border="3">
+        <tr>
+            <th> First Name </th>
+            <th> Last Name </th>
+            <th> Role </th>
+            <th> Setting User </th>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:utext="${user.firstname}"></td>
+            <td th:utext="${user.lastname}"></td>
+            <td th:utext="${user.role}"></td>
+            <td><a th:href="@{/listOfUser/{id}(id=${user.id})}">Profile</a> </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

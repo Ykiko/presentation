@@ -16,7 +16,7 @@ databaseChangeLog:
             constraints:
               nullable: false
             name: age
-            type: INTEGER
+            type: NUMERIC
         - column:
             name: email
             type: VARCHAR(255)
@@ -31,9 +31,38 @@ databaseChangeLog:
             type: VARCHAR(255)
         - column:
             name: role
-            type: INTEGER
+            type: NUMERIC
         - column:
             name: username
             type: VARCHAR(255)
         tableName: user
-
+- changeSet:
+    id: 1533049234630-2
+    author: grigory-yki (generated)
+    changes:
+    - loadData:
+        columns:
+        - column:
+            name: firstname
+            type: STRING
+        - column:
+            name: lastname
+            type: STRING
+        - column:
+            name: age
+            type: NUMERIC
+        - column:
+            name: email
+            type: STRING
+        - column:
+            name: username
+            type: STRING
+        - column:
+            name: password
+            type: STRING
+        - column:
+            name: role
+            type: NUMERIC
+        encoding: UTF-8
+        file: db/changelog/database/user.csv
+        tableName: user
