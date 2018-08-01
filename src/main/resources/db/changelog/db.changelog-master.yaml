@@ -3,6 +3,12 @@ databaseChangeLog:
     id: 1533049234630-1
     author: grigory-yki (generated)
     changes:
+    - createSequence:
+        sequenceName: hibernate_sequence
+- changeSet:
+    id: 1533049234630-2
+    author: grigory-yki (generated)
+    changes:
     - createTable:
         columns:
         - column:
@@ -37,7 +43,26 @@ databaseChangeLog:
             type: VARCHAR(255)
         tableName: user
 - changeSet:
-    id: 1533049234630-2
+    id: 1533049234630-3
+    author: grigory-yki (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: namepresentation_pkey
+            name: id
+            type: BIGSERIAL
+            autoIncrement: true
+        - column:
+            constraints:
+              nullable: false
+            name: namepresentation
+            type: VARCHAR(255)
+        tableName: presentation
+- changeSet:
+    id: 1533049234630-4
     author: grigory-yki (generated)
     changes:
     - loadData:
@@ -66,3 +91,15 @@ databaseChangeLog:
         encoding: UTF-8
         file: db/changelog/database/user.csv
         tableName: user
+- changeSet:
+    id: 1533049234630-5
+    author: grigory-yki (generated)
+    changes:
+    - loadData:
+        columns:
+        - column:
+            name: namepresentation
+            type: STRING
+        encoding: UTF-8
+        file: db/changelog/database/presentation.csv
+        tableName: presentation

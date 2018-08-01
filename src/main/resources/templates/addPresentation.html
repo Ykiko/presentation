@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration User</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/style.css}"/>
+</head>
+<body>
+<h1>Create a presentation:</h1>
+
+<form th:action="@{/addPresentation}"
+      th:object="${presentation}" method="POST">
+    Presentation title:
+    <input type="text" th:field="*{namepresentation}" required/>
+    <br/><br/>
+    <input type="submit" value="Create" />
+</form>
+
+<div th:if="${errorMessage}" th:utext="${errorMessage}"
+     style="color:red;font-style:italic;">
+    ...
+</div>
+</body>
+</html>

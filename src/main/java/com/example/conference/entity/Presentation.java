@@ -1,35 +1,38 @@
 package com.example.conference.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "presentation")
 public class Presentation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String namePresentation;
     private Long id;
+    private String namepresentation;
+
 
     public Presentation() {
     }
 
-    public Presentation(String namePresentation) {
-        this.namePresentation = namePresentation;
+    public Presentation(String namepresentation) {
+        this.namepresentation = namepresentation;
     }
 
     @Override
     public String toString() {
-        return String.format("Presentation[id=%d, namePresentation='%s']");
+        return "Presentation{" +
+                "namepresentation='" + namepresentation + '\'' +
+                '}';
     }
 
-    public String getNamePresentation() {
-        return namePresentation;
+    public String getNamepresentation() {
+        return namepresentation;
     }
 
-    public void setNamePresentation(String namePresentation) {
-        this.namePresentation = namePresentation;
+    public void setNamepresentation(String namepresentation) {
+        this.namepresentation = namepresentation;
     }
 
     public Long getId() {
