@@ -26,7 +26,7 @@
         </tr>
         <tr th:each="presentation : ${presentations}">
             <td th:utext="${presentation.namepresentation}"></td>
-            <td> </td>
+            <td th:utext="${presentation.room}"> </td>
             <td> </td>
         </tr>
     </table>

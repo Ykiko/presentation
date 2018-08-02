@@ -7,6 +7,8 @@ import java.io.Serializable;
 @Table(name = "presentation")
 public class Presentation implements Serializable {
 
+    private ROOM room = ROOM.ROOM0;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +19,14 @@ public class Presentation implements Serializable {
     }
 
     public Presentation(String namepresentation) {
+
         this.namepresentation = namepresentation;
+    }
+
+    public Presentation(String namepresentation, ROOM room) {
+
+        this.namepresentation = namepresentation;
+        this.room = room;
     }
 
     @Override
@@ -42,5 +51,13 @@ public class Presentation implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public ROOM getRoom() {
+        return room;
+    }
+
+    public void setRoom(ROOM room) {
+        this.room = room;
     }
 }

@@ -1,10 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Setting Presentation</title>
+    <title>Update Presentation</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
+<h1> Update a Presentation: </h1>
 
+<form th:action="@{/updatePresentation/{id}(id=${presentation.id})}"
+      th:object="${presentation}" method="post">
+    Name Presentation:
+    <input type="text" th:field="*{namepresentation}" th:value="${presentation.namepresentation}" required/>
+    <br/><br/>
+    Choosing a room:
+    <table class="table table-bordered">
+        <select th:field="*{room}" th:value="*{room}" required>
+            <option th:each="room : ${T(com.example.conference.entity.ROOM).values()}"
+                    th:field="*{room}"
+                    th:value="${room}"
+                    th:text="${room.getRoom()}">
+            </option>
+        </select>
+    </table>
+    <br/><br/>
+    <input type="submit" value="Create"/>
+</form>
+<div th:if="${errorMessage}" th:utext="${errorMessage}"
+     style="color:red; font-style:italic;">
+
+</div>
 </body>
 </html>

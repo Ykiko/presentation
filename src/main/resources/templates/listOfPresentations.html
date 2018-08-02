@@ -7,6 +7,9 @@
 </head>
 <body>
 <h1> List of presentations </h1>
+<br/>
+<a href="startList.html"> Start List </a>
+<br/><br/>
 <div>
     <table border="3">
         <tr>
@@ -16,9 +19,10 @@
             <th> Time </th>
         </tr>
         <tr th:each="presentation : ${presentations}">
-            <td> <a th:href="@{/presentation/{id}(id=${presentation.id})}"> Change </a> </td>
+            <td> <a th:href="@{/updatePresentation/{id}(id=${presentation.id})}"> Change </a> </td>
             <td th:utext="${presentation.namepresentation}"></td>
-            <td> </td>
+            <!--<td th:utext="${user.firstname}"></td>-->
+            <td th:utext="${presentation.room}"> </td>
             <td> </td>
         </tr>
     </table>

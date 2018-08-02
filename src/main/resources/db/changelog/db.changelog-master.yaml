@@ -60,6 +60,12 @@ databaseChangeLog:
               nullable: false
             name: namepresentation
             type: VARCHAR(255)
+        - column:
+            name: room
+            type: NUMERIC
+        - column:
+            name: time
+            type: NUMERIC
         tableName: presentation
 - changeSet:
     id: 1533049234630-4
