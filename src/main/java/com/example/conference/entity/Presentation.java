@@ -23,7 +23,8 @@ public class Presentation implements Serializable {
     @Override
     public String toString() {
         return "Presentation{" +
-                "namepresentation='" + namepresentation + '\'' +
+                "id=" + id +
+                ", namepresentation='" + namepresentation + '\'' +
                 '}';
     }
 

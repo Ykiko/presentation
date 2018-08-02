@@ -12,17 +12,22 @@
 <br/><br/>
 <a href="ListOfUsers">Users</a>
 <br/><br/>
-<a href="addPresentation.html">Add Presentation</a>
+<a href="listOfPresentations">List of presentations</a>
+<a href="addPresentation">Add Presentation</a>
 <br/><br/>
 
 <br/><br/>
 <div>
     <table border="3">
         <tr>
-            <th> Presenter </th>
             <th> Presentation title </th>
             <th> Classroom </th>
             <th> Time </th>
+        </tr>
+        <tr th:each="presentation : ${presentations}">
+            <td th:utext="${presentation.namepresentation}"></td>
+            <td> </td>
+            <td> </td>
         </tr>
     </table>
 </div>
