@@ -5,7 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Update Presentation</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
 <h1> Update a Presentation: </h1>
@@ -17,13 +16,14 @@
     <br/><br/>
     Choosing a room:
     <table class="table table-bordered">
-        <select th:field="*{room}" th:value="*{room}" required>
-            <option th:each="room : ${T(com.example.conference.entity.ROOM).values()}"
-                    th:field="*{room}"
-                    th:value="${room}"
-                    th:text="${room.getRoom()}">
-            </option>
-        </select>
+        <tr th:each="room : ${rooms}">
+            <td>
+                <input type="radio"
+                       th:field="${presentation.rooms}"
+                       th:checked="${true}"
+                       th:value="${room.id}"/>
+                <label th:text="${room}"></label>
+            </td>
     </table>
     <br/><br/>
     <input type="submit" value="Create"/>

@@ -60,15 +60,80 @@ databaseChangeLog:
               nullable: false
             name: namepresentation
             type: VARCHAR(255)
+        tableName: presentation
+- changeSet:
+    id: 1533049234630-4
+    author: grigory-yki (generated)
+    changes:
+    - createTable:
+        columns:
         - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: room_pkey
+            name: id
+            type: BIGSERIAL
+            autoIncrement: true
+        - column:
+            constraints:
+              nullable: false
             name: room
             type: NUMERIC
         - column:
             name: time
             type: NUMERIC
-        tableName: presentation
+        tableName: room
 - changeSet:
-    id: 1533049234630-4
+    id: 1533049234630-5
+    author: grigory-yki (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: presentation_room_pkey
+            name: presentation_id
+            type: BIGINT
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: presentation_room_pkey
+            name: room_id
+            type: BIGINT
+        tableName: presentation_room
+- changeSet:
+    id: 1533049234630-6
+    author: grigory-yki (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: presentation_id
+        baseTableName: presentation_room
+        constraintName: fkhyx1efsls0f00lxs6xd4w2b3j
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: presentation
+        validate: true
+- changeSet:
+    id: 1533049234630-7
+    author: grigory-yki (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: room_id
+        baseTableName: presentation_room
+        constraintName: fks7asxi8amiwjjq1sonlc4rihn
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: room
+        validate: true
+- changeSet:
+    id: 1533049234630-8
     author: grigory-yki (generated)
     changes:
     - loadData:
@@ -98,7 +163,7 @@ databaseChangeLog:
         file: db/changelog/database/user.csv
         tableName: user
 - changeSet:
-    id: 1533049234630-5
+    id: 1533049234630-9
     author: grigory-yki (generated)
     changes:
     - loadData:
@@ -109,3 +174,30 @@ databaseChangeLog:
         encoding: UTF-8
         file: db/changelog/database/presentation.csv
         tableName: presentation
+- changeSet:
+    id: 1533049234630-10
+    author: grigory-yki (generated)
+    changes:
+    - loadData:
+        columns:
+        - column:
+            name: room
+            type: NUMERIC
+        encoding: UTF-8
+        file: db/changelog/database/room.csv
+        tableName: room
+- changeSet:
+    id: 1531227523827-11
+    author: grigory-yki (generated)
+    changes:
+    - loadData:
+        columns:
+        - column:
+            name: presentation_id
+            type: NUMERIC
+        - column:
+            name: room_id
+            type: NUMERIC
+        encoding: UTF-8
+        file: db/changelog/database/presentation_room.csv
+        tableName: presentation_room

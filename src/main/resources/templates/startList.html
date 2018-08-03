@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8" />
     <title>schedule</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
 <h1>Schedule of presentations</h1>
@@ -26,7 +25,7 @@
         </tr>
         <tr th:each="presentation : ${presentations}">
             <td th:utext="${presentation.namepresentation}"></td>
-            <td th:utext="${presentation.room}"> </td>
+            <td th:utext="${presentation.rooms}"> </td>
             <td> </td>
         </tr>
     </table>

@@ -15,14 +15,15 @@
         <tr>
             <th> Setting </th>
             <th> Presentation title </th>
+            <th> Presenter </th>
             <th> Classroom </th>
             <th> Time </th>
         </tr>
         <tr th:each="presentation : ${presentations}">
             <td> <a th:href="@{/updatePresentation/{id}(id=${presentation.id})}"> Change </a> </td>
             <td th:utext="${presentation.namepresentation}"></td>
-            <!--<td th:utext="${user.firstname}"></td>-->
-            <td th:utext="${presentation.room}"> </td>
+            <td> </td>
+            <!--<td th:utext="${presentation.room}"> </td>-->
             <td> </td>
         </tr>
     </table>

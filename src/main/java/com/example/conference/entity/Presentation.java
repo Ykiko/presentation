@@ -1,19 +1,25 @@
 package com.example.conference.entity;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "presentation")
 public class Presentation implements Serializable {
 
-    private ROOM room = ROOM.ROOM0;
+    @ManyToMany
+    @JoinTable(name = "Presentation_Room",
+            joinColumns = @JoinColumn(name = "PRESENTATION_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ROOM_ID"))
+    private Set<Room> rooms;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String namepresentation;
-
 
     public Presentation() {
     }
@@ -21,12 +27,6 @@ public class Presentation implements Serializable {
     public Presentation(String namepresentation) {
 
         this.namepresentation = namepresentation;
-    }
-
-    public Presentation(String namepresentation, ROOM room) {
-
-        this.namepresentation = namepresentation;
-        this.room = room;
     }
 
     @Override
@@ -46,18 +46,26 @@ public class Presentation implements Serializable {
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public ROOM getRoom() {
-        return room;
+    public Set<Room> getRooms() {
+        return rooms;
     }
 
-    public void setRoom(ROOM room) {
-        this.room = room;
+    public void setRooms(Set<Room> rooms) {
+        this.rooms = rooms;
+    }
+
+    public void addRoom(Room room ) {
+        this.rooms.add(room);
+    }
+
+    public void removeRoom(Room room) {
+        this.rooms.remove(room);
     }
 }
