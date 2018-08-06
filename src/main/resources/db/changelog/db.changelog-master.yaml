@@ -136,6 +136,55 @@ databaseChangeLog:
     id: 1533049234630-8
     author: grigory-yki (generated)
     changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: presentation_user_pkey
+            name: presentation_id
+            type: BIGINT
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: presentation_user_pkey
+            name: user_id
+            type: BIGINT
+        tableName: presentation_user
+- changeSet:
+    id: 1533049234630-9
+    author: grigory-yki (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: presentation_id
+        baseTableName: presentation_user
+        constraintName: fkhyx1efsls2f00lxs6xd4w2b3j
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: presentation
+        validate: true
+- changeSet:
+    id: 1533049234630-10
+    author: grigory-yki (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: presentation_user
+        constraintName: fks7asxi8amiwjjq1soflc4rihn
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: user
+        validate: true
+- changeSet:
+    id: 1533049234630-11
+    author: grigory-yki (generated)
+    changes:
     - loadData:
         columns:
         - column:
@@ -163,7 +212,7 @@ databaseChangeLog:
         file: db/changelog/database/user.csv
         tableName: user
 - changeSet:
-    id: 1533049234630-9
+    id: 1533049234630-12
     author: grigory-yki (generated)
     changes:
     - loadData:
@@ -175,7 +224,7 @@ databaseChangeLog:
         file: db/changelog/database/presentation.csv
         tableName: presentation
 - changeSet:
-    id: 1533049234630-10
+    id: 1533049234630-13
     author: grigory-yki (generated)
     changes:
     - loadData:
@@ -187,7 +236,7 @@ databaseChangeLog:
         file: db/changelog/database/room.csv
         tableName: room
 - changeSet:
-    id: 1531227523827-11
+    id: 1531227523827-14
     author: grigory-yki (generated)
     changes:
     - loadData:
@@ -201,3 +250,18 @@ databaseChangeLog:
         encoding: UTF-8
         file: db/changelog/database/presentation_room.csv
         tableName: presentation_room
+- changeSet:
+    id: 1531227523827-15
+    author: grigory-yki (generated)
+    changes:
+    - loadData:
+        columns:
+        - column:
+            name: presentation_id
+            type: NUMERIC
+        - column:
+            name: user_id
+            type: NUMERIC
+        encoding: UTF-8
+        file: db/changelog/database/presentation_user.csv
+        tableName: presentation_user

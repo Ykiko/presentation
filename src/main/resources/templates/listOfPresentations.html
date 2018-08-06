@@ -22,8 +22,11 @@
         <tr th:each="presentation : ${presentations}">
             <td> <a th:href="@{/updatePresentation/{id}(id=${presentation.id})}"> Change </a> </td>
             <td th:utext="${presentation.namepresentation}"></td>
-            <td> </td>
-            <!--<td th:utext="${presentation.room}"> </td>-->
+            <td th:each="user : ${presentation.users}">
+                <span th:utext="${user.firstname}"></span>
+                <span th:utext="${user.lastname}"></span>
+            </td>
+            <td th:utext="${presentation.rooms}"></td>
             <td> </td>
         </tr>
     </table>

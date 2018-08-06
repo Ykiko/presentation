@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rooms</title>
+</head>
+<body>
+<h1>Rooms</h1>
+<br/><br/>
+<a href="startList"> Back </a>
+<br/><br/>
+<a href="addRoom"> Add Room </a>
+<br/><br/>
+<div>
+    <table border="3">
+        <tr>
+            <th> Rooms </th>
+            <th> Delete </th>
+        </tr>
+        <tr th:each="room : ${rooms}">
+            <td th:utext="${room}"></td>
+            <td><a th:href="@{/deleteRoom/(id=${room.id})}"> Delete </a></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

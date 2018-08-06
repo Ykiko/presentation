@@ -10,10 +10,12 @@
 <body>
 <h1>User Profile</h1>
 <br><br>
-<a href="/startList">Start Page</a>
+<a href="/ListOfUsers"> List of Users </a>
 <br><br>
 <a th:href="@{/updateUser/{id}(id=${user.id})}">Update User</a>
 <br><br>
+<a th:href="@{/deleteUser/(id=${user.id})}"> Delete</a>
+<br/><br/>
 <table border="3">
     <tr>
         <td>Id</td>

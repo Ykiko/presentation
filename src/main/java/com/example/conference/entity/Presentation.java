@@ -16,6 +16,12 @@ public class Presentation implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "ROOM_ID"))
     private Set<Room> rooms;
 
+    @ManyToMany
+    @JoinTable(name = "Presentation_user",
+            joinColumns = @JoinColumn(name = "PRESENTATION_ID"),
+            inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+    private Set<User> users;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -68,4 +74,12 @@ public class Presentation implements Serializable {
     public void removeRoom(Room room) {
         this.rooms.remove(room);
     }
+
+    public Set<User> getUsers() { return users; }
+
+    public void setUsers(Set<User> users) { this.users = users; }
+
+    public void addUser(User user) { this.users.add(user);}
+
+    public void removeUser(User user) { this.users.remove(user);}
 }

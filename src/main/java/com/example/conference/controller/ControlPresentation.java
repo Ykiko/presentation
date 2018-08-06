@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +19,9 @@ import java.util.List;
 public class ControlPresentation {
     private RepositoryPresent repositoryPresent;
 
-    @Value("${error.message1}")
+    @Value("${error.message4}")
     private String errorMessage4;
-    @Value("${error.message2}")
+    @Value("${error.message5}")
     private String errorMessage5;
 
     @Autowired
@@ -56,5 +57,13 @@ public class ControlPresentation {
         }
         model.addAttribute("errorMessage", errorMessage5);
         return "/addPresentation";
+    }
+
+    @RequestMapping(value = {"/deletePresentation"}, params = {"id"}, method = RequestMethod.GET)
+    public String deletePresenattion(Model model, @RequestParam("id") Long id) {
+
+        repositoryPresent.deleteById(id);
+
+        return "redirect:/listOfPresentations";
     }
 }

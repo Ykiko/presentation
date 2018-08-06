@@ -25,8 +25,10 @@
                 <label th:text="${room}"></label>
             </td>
     </table>
-    <br/><br/>
+    <br/>
     <input type="submit" value="Create"/>
+    <br/><br/>
+    <a th:href="@{/deletePresentation/(id=${presentation.id})}"> Delete </a>
 </form>
 <div th:if="${errorMessage}" th:utext="${errorMessage}"
      style="color:red; font-style:italic;">
