@@ -81,7 +81,7 @@ databaseChangeLog:
             type: NUMERIC
         - column:
             name: time
-            type: NUMERIC
+            type: VARCHAR(255)
         tableName: room
 - changeSet:
     id: 1533049234630-5
@@ -232,6 +232,9 @@ databaseChangeLog:
         - column:
             name: room
             type: NUMERIC
+        - column:
+            name: time
+            type: STRING
         encoding: UTF-8
         file: db/changelog/database/room.csv
         tableName: room

@@ -10,6 +10,7 @@
 <br/>
 <a href="startList.html"> Start List </a>
 <br/><br/>
+
 <div>
     <table border="3">
         <tr>
@@ -26,8 +27,12 @@
                 <span th:utext="${user.firstname}"></span>
                 <span th:utext="${user.lastname}"></span>
             </td>
-            <td th:utext="${presentation.rooms}"></td>
-            <td> </td>
+            <td th:each="room : ${presentation.rooms}">
+                <span th:utext="${room.room}"></span>
+            </td>
+            <td th:each="room : ${presentation.rooms}">
+                <span th:utext="${room.time}"></span>
+            </td>
         </tr>
     </table>
 </div>

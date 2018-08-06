@@ -14,6 +14,11 @@
     Name Presentation:
     <input type="text" th:field="*{namepresentation}" th:value="${presentation.namepresentation}" required/>
     <br/><br/>
+    <p>
+        <label for="localdate">Presentation time: </label>
+        <input type="datetime-local" id="localdate" name="date"/>
+    </p>
+    <br/><br/>
     Choosing a room:
     <table class="table table-bordered">
         <tr th:each="room : ${rooms}">
@@ -22,7 +27,7 @@
                        th:field="${presentation.rooms}"
                        th:checked="${true}"
                        th:value="${room.id}"/>
-                <label th:text="${room}"></label>
+                <label th:text="${room.room}"></label>
             </td>
     </table>
     <br/>
