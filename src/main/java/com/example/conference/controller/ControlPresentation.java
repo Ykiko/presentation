@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Controller
 public class ControlPresentation {
@@ -50,7 +52,6 @@ public class ControlPresentation {
         String namepresentation = presentation.getNamepresentation();
         Date startdate = presentation.getStartdate();
         Date enddate = presentation.getEnddate();
-        String room1 = room.getRoom();
 
         if (!namepresentation.isEmpty()) {
 
@@ -64,11 +65,12 @@ public class ControlPresentation {
                 Interval itemInterval = new Interval(item.getStartdate().getTime(), item.getEnddate().getTime());
                 Interval currentIntervar = new Interval(startdate.getTime(), enddate.getTime());
 
-                if (itemInterval.overlaps(currentIntervar) && room1.equals(item.getRooms())) {
+                if (itemInterval.overlaps(currentIntervar) && item.getRooms().contains(room)) {
                     return errorMessage8;
                 }
             }
             Presentation newPresentation = new Presentation(namepresentation, startdate, enddate);
+            newPresentation.addRoom(room);
             repositoryPresent.save(newPresentation);
             return "redirect:/startList";
         }

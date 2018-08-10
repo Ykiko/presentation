@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -15,13 +16,13 @@ public class Presentation implements Serializable {
     @JoinTable(name = "Presentation_Room",
             joinColumns = @JoinColumn(name = "PRESENTATION_ID"),
             inverseJoinColumns = @JoinColumn(name = "ROOM_ID"))
-    private Set<Room> rooms;
+    private Set<Room> rooms = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "Presentation_user",
             joinColumns = @JoinColumn(name = "PRESENTATION_ID"),
             inverseJoinColumns = @JoinColumn(name = "USER_ID"))
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date startdate;
