@@ -60,6 +60,12 @@ databaseChangeLog:
               nullable: false
             name: namepresentation
             type: VARCHAR(255)
+        - column:
+            name: startdate
+            type: TIMESTAMP
+        - column:
+            name: enddate
+            type: TIMESTAMP
         tableName: presentation
 - changeSet:
     id: 1533049234630-4
@@ -79,9 +85,6 @@ databaseChangeLog:
               nullable: false
             name: room
             type: NUMERIC
-        - column:
-            name: time
-            type: VARCHAR(255)
         tableName: room
 - changeSet:
     id: 1533049234630-5
@@ -220,6 +223,12 @@ databaseChangeLog:
         - column:
             name: namepresentation
             type: STRING
+        - column:
+            name: startdate
+            type: TIMESTAMP
+        - column:
+            name: enddate
+            type: TIMESTAMP
         encoding: UTF-8
         file: db/changelog/database/presentation.csv
         tableName: presentation
@@ -232,9 +241,6 @@ databaseChangeLog:
         - column:
             name: room
             type: NUMERIC
-        - column:
-            name: time
-            type: STRING
         encoding: UTF-8
         file: db/changelog/database/room.csv
         tableName: room

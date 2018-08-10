@@ -15,9 +15,27 @@
     <input type="text" th:field="*{namepresentation}" th:value="${presentation.namepresentation}" required/>
     <br/><br/>
     <p>
-        <label for="localdate">Presentation time: </label>
-        <input type="datetime-local" id="localdate" name="date"/>
+        <label for="localdate1"> Date and time start: </label>
+        <input id="localdate1" type="datetime-local" th:field="*{startdate}"/>
     </p>
+    <p>
+        <label for="localdate2"> Date and time the end: </label>
+        <input id="localdate2" type="datetime-local" th:field="*{enddate}"/>
+    </p>
+    <br/><br/>
+    Choosing a Presenter:
+    <table class="table table-bordered">
+        <tr th:each="user : ${users}">
+            <td>
+                <input type="radio"
+                       th:field="${presentation.users}"
+                       th:checked="${true}"
+                       th:value="${user.id}">
+                <label th:utext="${user.firstname}"></label>
+                <label th:utext="${user.lastname}"></label>
+            </td>
+        </tr>
+    </table>
     <br/><br/>
     Choosing a room:
     <table class="table table-bordered">
@@ -27,7 +45,7 @@
                        th:field="${presentation.rooms}"
                        th:checked="${true}"
                        th:value="${room.id}"/>
-                <label th:text="${room.room}"></label>
+                <label th:text="${room}"></label>
             </td>
     </table>
     <br/>

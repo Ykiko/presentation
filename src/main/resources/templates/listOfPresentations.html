@@ -16,22 +16,20 @@
         <tr>
             <th> Setting </th>
             <th> Presentation title </th>
-            <th> Presenter </th>
             <th> Classroom </th>
-            <th> Time </th>
+            <th> Start date </th>
+            <th> End date </th>
+            <th> Presenter </th>
         </tr>
         <tr th:each="presentation : ${presentations}">
             <td> <a th:href="@{/updatePresentation/{id}(id=${presentation.id})}"> Change </a> </td>
             <td th:utext="${presentation.namepresentation}"></td>
+            <td th:utext="${presentation.rooms}"></td>
+            <td th:utext="${presentation.startdate}"></td>
+            <td th:utext="${presentation.enddate}"></td>
             <td th:each="user : ${presentation.users}">
-                <span th:utext="${user.firstname}"></span>
-                <span th:utext="${user.lastname}"></span>
-            </td>
-            <td th:each="room : ${presentation.rooms}">
-                <span th:utext="${room.room}"></span>
-            </td>
-            <td th:each="room : ${presentation.rooms}">
-                <span th:utext="${room.time}"></span>
+                <label th:utext="${user.firstname}"></label>
+                <label th:utext="${user.lastname}"></label>
             </td>
         </tr>
     </table>

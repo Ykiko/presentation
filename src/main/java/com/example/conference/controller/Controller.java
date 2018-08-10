@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class Controller {
     private RepositoryPresent repositoryPresent;
     private RepositoryRoom repositoryRoom;
-    //private Repository repository;
 
     @Value("${welcome.message}")
     private String message;

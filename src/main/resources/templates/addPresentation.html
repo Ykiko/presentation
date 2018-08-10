@@ -13,7 +13,28 @@
     Presentation title:
     <input type="text" th:field="*{namepresentation}" required/>
     <br/><br/>
-    <input type="submit" value="Create" />
+    <p>
+        <label for="localdate1"> Date and time start: </label>
+        <input id="localdate1" type="datetime-local" th:field="*{startdate}"/>
+    </p>
+    <p>
+        <label for="localdate2"> Date and time the end: </label>
+        <input id="localdate2" type="datetime-local" th:field="*{enddate}"/>
+    </p>
+    <br/>
+    Choosing a room:
+    <table class="table table-bordered">
+        <tr th:each="room : ${rooms}">
+            <td>
+                <input type="radio"
+                       th:field="${presentation.rooms}"
+                       th:checked="${true}"
+                       th:value="${room.id}"/>
+                <label th:text="${room}"></label>
+            </td>
+    </table>
+    <br/>
+    <input type="submit" value="Create"/>
 </form>
 
 <div th:if="${errorMessage}" th:utext="${errorMessage}"

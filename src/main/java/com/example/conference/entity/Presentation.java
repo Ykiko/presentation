@@ -1,9 +1,10 @@
 package com.example.conference.entity;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -22,6 +23,11 @@ public class Presentation implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "USER_ID"))
     private Set<User> users;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private Date startdate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private Date enddate;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,15 +36,18 @@ public class Presentation implements Serializable {
     public Presentation() {
     }
 
-    public Presentation(String namepresentation) {
+    public Presentation(String namepresentation, Date startdate, Date enddate) {
 
         this.namepresentation = namepresentation;
+        this.startdate = startdate;
+        this.enddate = enddate;
     }
 
     @Override
     public String toString() {
         return "Presentation{" +
-                "id=" + id +
+                ", startdate=" + startdate +
+                ", enddate=" + enddate +
                 ", namepresentation='" + namepresentation + '\'' +
                 '}';
     }
@@ -82,4 +91,20 @@ public class Presentation implements Serializable {
     public void addUser(User user) { this.users.add(user);}
 
     public void removeUser(User user) { this.users.remove(user);}
+
+    public Date getStartdate() {
+        return startdate;
+    }
+
+    public void setStartdate(Date startdate) {
+        this.startdate = startdate;
+    }
+
+    public Date getEnddate() {
+        return enddate;
+    }
+
+    public void setEnddate(Date enddate) {
+        this.enddate = enddate;
+    }
 }

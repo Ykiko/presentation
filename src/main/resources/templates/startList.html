@@ -21,17 +21,14 @@
         <tr>
             <th> Presentation title </th>
             <th> Classroom </th>
-            <th> Time </th>
+            <th> Start date </th>
+            <th> End date </th>
         </tr>
         <tr th:each="presentation : ${presentations}">
             <td th:utext="${presentation.namepresentation}"></td>
-            </td>
-            <td th:each="room : ${presentation.rooms}">
-                <span th:utext="${room.room}"></span>
-            </td>
-            <td th:each="room : ${presentation.rooms}">
-                <span th:utext="${room.time}"></span>
-            </td>
+            <td th:utext="${presentation.rooms}"> </td>
+            <td th:utext="${presentation.startdate}"></td>
+            <td th:utext="${presentation.enddate}"></td>
         </tr>
     </table>
 </div>
