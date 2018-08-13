@@ -72,7 +72,7 @@ public class ControlPresentation {
             Presentation newPresentation = new Presentation(namepresentation, startdate, enddate);
             newPresentation.addRoom(room);
             repositoryPresent.save(newPresentation);
-            return "redirect:/startList";
+            return "redirect:/schedule";
         }
         model.addAttribute("errorMessage", errorMessage5);
         return "/addPresentation";
