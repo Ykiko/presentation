@@ -3,6 +3,7 @@ package com.example.conference.controller;
 import com.example.conference.entity.User;
 import com.example.conference.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ public class ControlListofUsers {
         this.repository = repository;
     }
 
+    @Secured("Admin")
     @RequestMapping(value = {"/ListOfUsers"}, method = RequestMethod.GET)
     public String ListOfUsers(Model model) {
         model.addAttribute("users", repository.findAll());

@@ -7,6 +7,7 @@ import com.example.conference.repository.RepositoryRoom;
 import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,6 +37,7 @@ public class ControlPresentation {
         this.repositoryRoom = repositoryRoom;
     }
 
+    @Secured({"Admin", "Presenter"})
     @RequestMapping(value = {"/addPresentation"}, method = RequestMethod.GET)
     public String addPresentation(Model model) {
         Presentation presentation = new Presentation();
@@ -45,6 +47,7 @@ public class ControlPresentation {
         return "/addPresentation";
     }
 
+    @Secured({"Admin", "Presenter"})
     @RequestMapping(value = {"/addPresentation"}, method = RequestMethod.POST)
     public String savePresentation(Model model, @ModelAttribute("presentation") Presentation presentation,
                                    @ModelAttribute("rooms") Room room) {
@@ -78,6 +81,7 @@ public class ControlPresentation {
         return "/addPresentation";
     }
 
+    @Secured({"Admin", "Presenter"})
     @RequestMapping(value = {"/deletePresentation"}, params = {"id"}, method = RequestMethod.GET)
     public String deletePresentation(Model model, @RequestParam("id") Long id) {
 

@@ -4,6 +4,7 @@ import com.example.conference.entity.ROLE;
 import com.example.conference.entity.User;
 import com.example.conference.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,6 +31,7 @@ public class ControlListUser {
         return "listOfUser";
     }
 
+    @Secured("Admin")
     @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.GET)
     public String updateUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", repository.getById(id));
@@ -37,6 +39,7 @@ public class ControlListUser {
         return "settingUser";
     }
 
+    @Secured("Admin")
     @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.POST)
     public String saveUser(@PathVariable("id") Long id,
                            @ModelAttribute("user") User user) {

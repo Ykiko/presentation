@@ -17,12 +17,13 @@ import java.util.List;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-    private Repository repository;
+    private final Repository repository;
 
     @Autowired
     public MyUserDetailsService(Repository repository) {
         this.repository = repository;
     }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetails loadedUser;
@@ -47,6 +48,6 @@ public class MyUserDetailsService implements UserDetailsService {
             return res;
         }
         @Override
-        public String getAuthority() { return "user"; }
+        public String getAuthority() { return "Listener"; }
     }
 }

@@ -4,6 +4,7 @@ import com.example.conference.entity.Room;
 import com.example.conference.repository.RepositoryRoom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,12 +27,14 @@ public class ControllerRoom {
     @Autowired
     public ControllerRoom (RepositoryRoom repositoryRoom) {this.repositoryRoom = repositoryRoom;}
 
+    @Secured("Admin")
     @RequestMapping(value = {"/rooms"}, method = RequestMethod.GET)
     public String listOfRoom(Model model) {
         model.addAttribute("rooms", repositoryRoom.findAll());
         return "/rooms";
     }
 
+    @Secured("Admin")
     @RequestMapping(value = {"/addRoom"}, method = RequestMethod.GET)
     public String addRoom(Model model) {
         Room room = new Room();
@@ -39,7 +42,7 @@ public class ControllerRoom {
         model.addAttribute("rooms",  repositoryRoom.findAll());
         return "/addRoom";
     }
-
+    @Secured("Admin")
     @RequestMapping(value = {"/addRoom"}, method = RequestMethod.POST)
     public String saveRoom(Model model, @ModelAttribute("room") Room room) {
         String nameroom = room.getRoom();
@@ -59,6 +62,7 @@ public class ControllerRoom {
         return "/addRoom";
     }
 
+    @Secured("Admin")
     @RequestMapping(value = {"/deleteRoom"}, params = {"id"}, method = RequestMethod.GET)
     public String deleteRoom(Model model, @RequestParam("id") Long id) {
 

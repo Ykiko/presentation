@@ -16,6 +16,10 @@
 <br><br>
 <a th:href="@{/deleteUser/(id=${user.id})}"> Delete</a>
 <br/><br/>
+<form th:action="@{/hello}" method="post">
+    <input type="submit" value="Sign out of your account"/>
+</form>
+<br/><br/>
 <table border="3">
     <tr>
         <td>Id</td>

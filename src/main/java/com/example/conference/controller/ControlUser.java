@@ -4,6 +4,8 @@ import com.example.conference.entity.User;
 import com.example.conference.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,7 +48,8 @@ public class ControlUser {
         int age = user.getAge();
         String email = user.getEmail();
         String username = user.getUsername();
-        String password = user.getPassword();
+        String password = "{bcrypt}" + new BCryptPasswordEncoder().encode(user.getPassword());
+
 
         if (!firstname.isEmpty() && !lastname.isEmpty()
                 && firstname != null && lastname != null) {
@@ -65,6 +68,7 @@ public class ControlUser {
         return "/registrationUser";
     }
 
+    @Secured("Admin")
     @RequestMapping(value = {"/deleteUser"}, params = {"id"}, method = RequestMethod.GET)
     public String deleteUser(Model model, @RequestParam("id") Long id) {
 

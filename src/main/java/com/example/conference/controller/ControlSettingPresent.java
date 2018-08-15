@@ -8,6 +8,7 @@ import com.example.conference.repository.RepositoryRoom;
 import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,12 +39,14 @@ public class ControlSettingPresent {
         this.repositoryRoom = repositoryRoom;
     }
 
+    @Secured({"Admin", "Presenter"})
     @RequestMapping(value = {"/listOfPresentations"}, method = RequestMethod.GET)
     public String listOfPresentation(Model model) {
         model.addAttribute("presentations", repositoryPresent.findAll());
         return "/listOfPresentations";
     }
 
+    @Secured({"Admin", "Presenter"})
     @RequestMapping(value = {"/updatePresentation/{id}"}, method = RequestMethod.GET)
     public String updatePresentation(@PathVariable("id") Long id, Model model) {
         model.addAttribute("presentation", repositoryPresent.getById(id));
@@ -53,6 +56,7 @@ public class ControlSettingPresent {
         return "settingPresentation";
     }
 
+    @Secured({"Admin", "Presenter"})
     @RequestMapping(value = {"/updatePresentation/{id}"}, method = RequestMethod.POST)
     public String updatePresent(Model model, @PathVariable("id") Long id,
                            @ModelAttribute("presentation") Presentation presentation,

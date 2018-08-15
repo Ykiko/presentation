@@ -28,16 +28,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/schedule").permitAll()
+                .antMatchers("/h2-console/**", "/", "/schedule", "/registrationUser", "/hello").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/hello")
+                .loginPage("/hello").defaultSuccessUrl("/schedule")
+                .failureUrl("/schedule")
                 .permitAll()
                 .and()
                 .logout()
                 .permitAll();
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
+
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, MyUserDetailsService myUserDetailsService) throws Exception {
