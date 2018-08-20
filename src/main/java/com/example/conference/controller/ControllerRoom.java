@@ -1,5 +1,6 @@
 package com.example.conference.controller;
 
+import com.example.conference.entity.ROLE;
 import com.example.conference.entity.Room;
 import com.example.conference.repository.RepositoryRoom;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +28,14 @@ public class ControllerRoom {
     @Autowired
     public ControllerRoom (RepositoryRoom repositoryRoom) {this.repositoryRoom = repositoryRoom;}
 
-    @Secured("Admin")
+    @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/rooms"}, method = RequestMethod.GET)
     public String listOfRoom(Model model) {
         model.addAttribute("rooms", repositoryRoom.findAll());
         return "/rooms";
     }
 
-    @Secured("Admin")
+    @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/addRoom"}, method = RequestMethod.GET)
     public String addRoom(Model model) {
         Room room = new Room();
@@ -42,7 +43,7 @@ public class ControllerRoom {
         model.addAttribute("rooms",  repositoryRoom.findAll());
         return "/addRoom";
     }
-    @Secured("Admin")
+    @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/addRoom"}, method = RequestMethod.POST)
     public String saveRoom(Model model, @ModelAttribute("room") Room room) {
         String nameroom = room.getRoom();
@@ -62,7 +63,7 @@ public class ControllerRoom {
         return "/addRoom";
     }
 
-    @Secured("Admin")
+    @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/deleteRoom"}, params = {"id"}, method = RequestMethod.GET)
     public String deleteRoom(Model model, @RequestParam("id") Long id) {
 

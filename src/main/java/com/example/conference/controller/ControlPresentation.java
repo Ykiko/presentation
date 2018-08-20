@@ -1,6 +1,7 @@
 package com.example.conference.controller;
 
 import com.example.conference.entity.Presentation;
+import com.example.conference.entity.ROLE;
 import com.example.conference.entity.Room;
 import com.example.conference.repository.RepositoryPresent;
 import com.example.conference.repository.RepositoryRoom;
@@ -37,7 +38,7 @@ public class ControlPresentation {
         this.repositoryRoom = repositoryRoom;
     }
 
-    @Secured({"Admin", "Presenter"})
+    @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/addPresentation"}, method = RequestMethod.GET)
     public String addPresentation(Model model) {
         Presentation presentation = new Presentation();
@@ -47,7 +48,7 @@ public class ControlPresentation {
         return "/addPresentation";
     }
 
-    @Secured({"Admin", "Presenter"})
+    @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/addPresentation"}, method = RequestMethod.POST)
     public String savePresentation(Model model, @ModelAttribute("presentation") Presentation presentation,
                                    @ModelAttribute("rooms") Room room) {
@@ -81,7 +82,7 @@ public class ControlPresentation {
         return "/addPresentation";
     }
 
-    @Secured({"Admin", "Presenter"})
+    @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/deletePresentation"}, params = {"id"}, method = RequestMethod.GET)
     public String deletePresentation(Model model, @RequestParam("id") Long id) {
 

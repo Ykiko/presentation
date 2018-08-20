@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -32,22 +33,11 @@ public class MyUserDetailsService implements UserDetailsService {
             User client = repository.findByUsername(username);
             loadedUser = new org.springframework.security.core.userdetails.User(
                     client.getUsername(), client.getPassword(),
-                    UserAuthority.getAuth());
+                    Collections.singleton(client.getRole()));
         } catch (Exception repositoryProblem) {
             throw new InternalAuthenticationServiceException(repositoryProblem.getMessage(), repositoryProblem);
         }
         return loadedUser;
     }
 
-    static class UserAuthority implements GrantedAuthority
-    {
-        static Collection<GrantedAuthority> getAuth()
-        {
-            List<GrantedAuthority> res = new ArrayList<>(1);
-            res.add(new UserAuthority());
-            return res;
-        }
-        @Override
-        public String getAuthority() { return "Listener"; }
-    }
 }

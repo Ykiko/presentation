@@ -1,7 +1,10 @@
 package com.example.conference.controller;
 
+import antlr.StringUtils;
+import com.example.conference.entity.ROLE;
 import com.example.conference.entity.User;
 import com.example.conference.repository.Repository;
+import com.example.conference.service.MailSend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
@@ -19,6 +22,9 @@ import java.util.List;
 @Controller
 public class ControlUser {
     private Repository repository;
+
+    @Autowired
+    private MailSend mailSend;
 
     @Value("${error.message1}")
     private String errorMessage1;
@@ -51,8 +57,7 @@ public class ControlUser {
         String password = "{bcrypt}" + new BCryptPasswordEncoder().encode(user.getPassword());
 
 
-        if (!firstname.isEmpty() && !lastname.isEmpty()
-                && firstname != null && lastname != null) {
+        if (!firstname.isEmpty() && !lastname.isEmpty()) {
 
             List<String> nameStr = new ArrayList<>();
             repository.findAll().forEach(item -> {
@@ -62,13 +67,20 @@ public class ControlUser {
                 return errorMessage3;
             }
             User newUser = repository.save(new User(firstname, lastname, age, email, username, password));
+
+            if (!org.springframework.util.StringUtils.isEmpty(user.getEmail())) {
+                String message = String.format("Hello, %s! " +
+                        "Welcome to Presentation", user.getUsername());
+
+                mailSend.send(user.getEmail(), "Welcome", message);
+            }
             return "redirect:/listOfUser/" + newUser.getId();
         }
         model.addAttribute("errorMessage", errorMessage1);
         return "/registrationUser";
     }
 
-    @Secured("Admin")
+    @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/deleteUser"}, params = {"id"}, method = RequestMethod.GET)
     public String deleteUser(Model model, @RequestParam("id") Long id) {
 

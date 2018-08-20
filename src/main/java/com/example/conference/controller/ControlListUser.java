@@ -31,7 +31,7 @@ public class ControlListUser {
         return "listOfUser";
     }
 
-    @Secured("Admin")
+    @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.GET)
     public String updateUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", repository.getById(id));
@@ -39,7 +39,7 @@ public class ControlListUser {
         return "settingUser";
     }
 
-    @Secured("Admin")
+    @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.POST)
     public String saveUser(@PathVariable("id") Long id,
                            @ModelAttribute("user") User user) {

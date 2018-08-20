@@ -1,5 +1,6 @@
 package com.example.conference.controller;
 
+import com.example.conference.entity.ROLE;
 import com.example.conference.entity.User;
 import com.example.conference.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class ControlListofUsers {
         this.repository = repository;
     }
 
-    @Secured("Admin")
+    @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/ListOfUsers"}, method = RequestMethod.GET)
     public String ListOfUsers(Model model) {
         model.addAttribute("users", repository.findAll());

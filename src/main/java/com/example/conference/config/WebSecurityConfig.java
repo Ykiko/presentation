@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebMvc
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Order(SecurityProperties.BASIC_AUTH_ORDER)
 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/hello").defaultSuccessUrl("/schedule")
+                .loginPage("/hello")
                 .failureUrl("/schedule")
                 .permitAll()
                 .and()

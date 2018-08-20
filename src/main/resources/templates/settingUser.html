@@ -31,7 +31,7 @@
                 <option th:each="role : ${T(com.example.conference.entity.ROLE).values()}"
                         th:field="*{role}"
                         th:value="${role}"
-                        th:text="${role.getRole()}">
+                        th:text="${role.name()}">
                 </option>
             </select>
     </table>

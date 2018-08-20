@@ -1,6 +1,7 @@
 package com.example.conference.controller;
 
 import com.example.conference.entity.Presentation;
+import com.example.conference.entity.ROLE;
 import com.example.conference.entity.Room;
 import com.example.conference.repository.Repository;
 import com.example.conference.repository.RepositoryPresent;
@@ -39,14 +40,14 @@ public class ControlSettingPresent {
         this.repositoryRoom = repositoryRoom;
     }
 
-    @Secured({"Admin", "Presenter"})
+    @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/listOfPresentations"}, method = RequestMethod.GET)
     public String listOfPresentation(Model model) {
         model.addAttribute("presentations", repositoryPresent.findAll());
         return "/listOfPresentations";
     }
 
-    @Secured({"Admin", "Presenter"})
+    @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/updatePresentation/{id}"}, method = RequestMethod.GET)
     public String updatePresentation(@PathVariable("id") Long id, Model model) {
         model.addAttribute("presentation", repositoryPresent.getById(id));
@@ -56,7 +57,7 @@ public class ControlSettingPresent {
         return "settingPresentation";
     }
 
-    @Secured({"Admin", "Presenter"})
+    @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/updatePresentation/{id}"}, method = RequestMethod.POST)
     public String updatePresent(Model model, @PathVariable("id") Long id,
                            @ModelAttribute("presentation") Presentation presentation,

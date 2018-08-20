@@ -1,5 +1,6 @@
 package com.example.conference.controller;
 
+import com.example.conference.repository.Repository;
 import com.example.conference.repository.RepositoryPresent;
 import com.example.conference.repository.RepositoryRoom;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class Controller {
     private String message;
 
     @Autowired
-    public Controller(RepositoryRoom repositoryRoom, RepositoryPresent repositoryPresent) {
+    public Controller(RepositoryRoom repositoryRoom, RepositoryPresent repositoryPresent, Repository repository) {
         this.repositoryPresent = repositoryPresent;
         this.repositoryRoom = repositoryRoom;
     }
