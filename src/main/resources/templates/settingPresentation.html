@@ -27,7 +27,7 @@
     <table class="table table-bordered">
         <tr th:each="user : ${users}">
             <td>
-                <input type="radio"
+                <input type="checkbox"
                        th:field="${presentation.users}"
                        th:checked="${true}"
                        th:value="${user.id}">
@@ -42,10 +42,10 @@
         <tr th:each="room : ${rooms}">
             <td>
                 <input type="radio"
-                       th:field="${presentation.rooms}"
+                       th:field="${presentation.room}"
                        th:checked="${true}"
                        th:value="${room.id}"/>
-                <label th:text="${room}"></label>
+                <label th:utext="${room}"></label>
             </td>
     </table>
     <br/>

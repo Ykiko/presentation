@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,39 +61,42 @@ public class ControlSettingPresent {
     @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/updatePresentation/{id}"}, method = RequestMethod.POST)
     public String updatePresent(Model model, @PathVariable("id") Long id,
-                           @ModelAttribute("presentation") Presentation presentation,
-                           @ModelAttribute("rooms") Room room) {
+                                @ModelAttribute("presentation") Presentation presentation,
+                                @ModelAttribute("rooms") Room room) {
 
         String namepresentation = presentation.getNamepresentation();
         Date startdate = presentation.getStartdate();
         Date enddate = presentation.getEnddate();
         Optional<Presentation> editPresentation = repositoryPresent.findById(id);
-        String room1 = room.getRoom();
+        Optional<Room> newRoom = repositoryRoom.findByRoom(room.getRoom());
 
-        if (!namepresentation.isEmpty()) {
+        if (!namepresentation.isEmpty() && editPresentation.isPresent() && newRoom.isPresent()) {
 
-            // check time overlap
+            Room expectedRoom = newRoom.get();
+
             for (Presentation item : repositoryPresent.findAll()) {
 
-                for (Room items : repositoryRoom.findAll()) {
+                Interval itemInterval = new Interval(item.getStartdate().getTime(), item.getEnddate().getTime());
+                Interval currentIntervar = new Interval(startdate.getTime(), enddate.getTime());
 
-                    Interval currentIntervar = new Interval(startdate.getTime(), enddate.getTime());
-                    Interval itemInterval = new Interval(item.getEnddate().getTime(), item.getStartdate().getTime());
+                for (Room item1 : repositoryRoom.findAll()) {
 
-                    if (itemInterval.overlaps(currentIntervar) && room1.equals(items.getRoom())) {
-                        return errorMessage8;
-                    }
-                    if (editPresentation.isPresent()) {
+                    if () {
 
-                        Presentation currentPresentation = editPresentation.get();
-                        presentation.setId(currentPresentation.getId());
-                        repositoryPresent.save(presentation);
+                        if (itemInterval.overlaps(currentIntervar) && expectedRoom.equals(item1)) {
+                            return errorMessage8;
+                        }
+
                     }
                 }
             }
+            Presentation currentPresentation = editPresentation.get();
+            presentation.setId(currentPresentation.getId());
+            presentation.setRoom(expectedRoom);
+            repositoryPresent.save(presentation);
         }
-            model.addAttribute("errorMessage", errorMessage5);
-            return "redirect:/listOfPresentations";
-        }
+        model.addAttribute("errorMessage", errorMessage5);
+        return "redirect:/listOfPresentations";
+    }
 
 }

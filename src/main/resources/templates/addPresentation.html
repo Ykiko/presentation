@@ -27,7 +27,7 @@
         <tr th:each="room : ${rooms}">
             <td>
                 <input type="radio"
-                       th:field="${presentation.rooms}"
+                       th:field="${presentation.room}"
                        th:checked="${true}"
                        th:value="${room.id}"/>
                 <label th:text="${room}"></label>

@@ -25,6 +25,7 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: 'org.apache.maven.plagins'
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
@@ -36,34 +37,10 @@ repositories {
     maven { url "https://repo.spring.io/milestone" }
 }
 
-jar {
-    baseName = 'junit5-gradle-example'
-    version = '1.0.0-SNAPSHOT'
-}
-
 compileTestJava {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
     options.compilerArgs += '-parameters'
-}
-
-junitPlatform {
-    // platformVersion '1.0.0'
-    filters {
-        engines {
-            // include 'junit-jupiter', 'junit-vintage'
-            // exclude 'custom-engine'
-        }
-        tags {
-            // include 'fast'
-            exclude 'slow'
-        }
-        // includeClassNamePattern '.*Test'
-    }
-    // configurationParameter 'junit.jupiter.conditions.deactivate', '*'
-    // enableStandardTestTask true
-    // reportsDir file('build/test-results/junit-platform') // this is the default
-    logManager 'org.apache.logging.log4j.jul.LogManager'
 }
 
 dependencies {
@@ -72,6 +49,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework.boot:spring-boot-starter-mail')
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-samples:1.0.1.BUILD-SNAPSHOT')
     runtime('com.h2database:h2')
     compile('org.liquibase:liquibase-core')
     compileOnly('org.projectlombok:lombok')

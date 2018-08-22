@@ -12,11 +12,11 @@ import java.util.Set;
 @Table(name = "presentation")
 public class Presentation implements Serializable {
 
-    @ManyToMany
+    @ManyToOne
     @JoinTable(name = "Presentation_Room",
             joinColumns = @JoinColumn(name = "PRESENTATION_ID"),
             inverseJoinColumns = @JoinColumn(name = "ROOM_ID"))
-    private Set<Room> rooms = new HashSet<>();
+    private Room room;
 
     @ManyToMany
     @JoinTable(name = "Presentation_user",
@@ -53,6 +53,14 @@ public class Presentation implements Serializable {
                 '}';
     }
 
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     public String getNamepresentation() {
         return namepresentation;
     }
@@ -67,22 +75,6 @@ public class Presentation implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Set<Room> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(Set<Room> rooms) {
-        this.rooms = rooms;
-    }
-
-    public void addRoom(Room room ) {
-        this.rooms.add(room);
-    }
-
-    public void removeRoom(Room room) {
-        this.rooms.remove(room);
     }
 
     public Set<User> getUsers() { return users; }

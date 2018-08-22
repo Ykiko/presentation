@@ -24,7 +24,7 @@
         <tr th:each="presentation : ${presentations}">
             <td> <a th:href="@{/updatePresentation/{id}(id=${presentation.id})}"> Change </a> </td>
             <td th:utext="${presentation.namepresentation}"></td>
-            <td th:utext="${presentation.rooms}"></td>
+            <td th:utext="${presentation.room}"></td>
             <td th:utext="${presentation.startdate}"></td>
             <td th:utext="${presentation.enddate}"></td>
             <td th:each="user : ${presentation.users}">
