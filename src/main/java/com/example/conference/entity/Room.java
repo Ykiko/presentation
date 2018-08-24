@@ -36,8 +36,7 @@ public class Room {
 
     @Override
     public String toString() {
-        return "Room{" +
-                "room='" + room + '\'' +
+        return "Room{" + room + '\'' +
                 '}';
     }
 }

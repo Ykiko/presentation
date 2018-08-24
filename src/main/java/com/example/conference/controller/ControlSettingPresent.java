@@ -62,40 +62,40 @@ public class ControlSettingPresent {
     @RequestMapping(value = {"/updatePresentation/{id}"}, method = RequestMethod.POST)
     public String updatePresent(Model model, @PathVariable("id") Long id,
                                 @ModelAttribute("presentation") Presentation presentation,
-                                @ModelAttribute("rooms") Room room) {
-
+                                @ModelAttribute("room") Long roomId) {
         String namepresentation = presentation.getNamepresentation();
         Date startdate = presentation.getStartdate();
         Date enddate = presentation.getEnddate();
         Optional<Presentation> editPresentation = repositoryPresent.findById(id);
-        Optional<Room> newRoom = repositoryRoom.findByRoom(room.getRoom());
+        Optional<Room> newRoom = repositoryRoom.findById(roomId);
 
         if (!namepresentation.isEmpty() && editPresentation.isPresent() && newRoom.isPresent()) {
 
+            Presentation currentPresentation = editPresentation.get();
             Room expectedRoom = newRoom.get();
 
-            for (Presentation item : repositoryPresent.findAll()) {
+            for (Presentation item : repositoryPresent.findByRoom(expectedRoom)) {
+
+                if (item == currentPresentation) {
+                    continue;
+                }
 
                 Interval itemInterval = new Interval(item.getStartdate().getTime(), item.getEnddate().getTime());
                 Interval currentIntervar = new Interval(startdate.getTime(), enddate.getTime());
 
-                for (Room item1 : repositoryRoom.findAll()) {
-
-                    if () {
-
-                        if (itemInterval.overlaps(currentIntervar) && expectedRoom.equals(item1)) {
-                            return errorMessage8;
-                        }
-
-                    }
+                if (itemInterval.overlaps(currentIntervar)) {
+                    return errorMessage8;
                 }
             }
-            Presentation currentPresentation = editPresentation.get();
-            presentation.setId(currentPresentation.getId());
-            presentation.setRoom(expectedRoom);
-            repositoryPresent.save(presentation);
+
+            currentPresentation.setNamepresentation(namepresentation);
+            currentPresentation.setUsers(presentation.getUsers());
+            currentPresentation.setStartdate(startdate);
+            currentPresentation.setEnddate(enddate);
+            currentPresentation.setRoom(expectedRoom);
+            repositoryPresent.save(currentPresentation);
         }
-        model.addAttribute("errorMessage", errorMessage5);
+//        model.addAttribute("errorMessage", errorMessage5);
         return "redirect:/listOfPresentations";
     }
 

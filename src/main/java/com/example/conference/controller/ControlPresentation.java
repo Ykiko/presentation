@@ -51,12 +51,12 @@ public class ControlPresentation {
     @RequestMapping(value = {"/addPresentation"}, method = RequestMethod.POST)
     public String savePresentation(Model model,
                                    @ModelAttribute("presentation") Presentation presentation,
-                                   @ModelAttribute("rooms") Room room) {
+                                   @ModelAttribute("room") Long roomId) {
 
         String namepresentation = presentation.getNamepresentation();
         Date startdate = presentation.getStartdate();
         Date enddate = presentation.getEnddate();
-        Optional<Room> newRoom = repositoryRoom.findByRoom(room.getRoom());
+        Optional<Room> newRoom = repositoryRoom.findById(roomId);
 
         if (!namepresentation.isEmpty() && newRoom.isPresent()) {
 

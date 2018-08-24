@@ -14,22 +14,22 @@
 <div>
     <table border="3">
         <tr>
-            <th> Setting </th>
-            <th> Presentation title </th>
-            <th> Classroom </th>
-            <th> Start date </th>
-            <th> End date </th>
-            <th> Presenter </th>
+            <th> Setting</th>
+            <th> Presentation title</th>
+            <th> Classroom</th>
+            <th> Start date</th>
+            <th> End date</th>
+            <th> Presenter</th>
         </tr>
         <tr th:each="presentation : ${presentations}">
-            <td> <a th:href="@{/updatePresentation/{id}(id=${presentation.id})}"> Change </a> </td>
+            <td><a th:href="@{/updatePresentation/{id}(id=${presentation.id})}"> Change </a></td>
             <td th:utext="${presentation.namepresentation}"></td>
             <td th:utext="${presentation.room}"></td>
             <td th:utext="${presentation.startdate}"></td>
             <td th:utext="${presentation.enddate}"></td>
-            <td th:each="user : ${presentation.users}">
-                <label th:utext="${user.firstname}"></label>
-                <label th:utext="${user.lastname}"></label>
+            <td> <span th:each="user : ${presentation.users} "
+                       th:utext="${user.firstname} + ' ' + ${user.lastname} + '; '">
+            </span>
             </td>
         </tr>
     </table>
