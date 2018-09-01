@@ -1,5 +1,6 @@
 package com.example.conference.config;
 
+import com.example.conference.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;

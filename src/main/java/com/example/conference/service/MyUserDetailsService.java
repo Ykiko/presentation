@@ -1,4 +1,4 @@
-package com.example.conference.config;
+package com.example.conference.service;
 
 import com.example.conference.entity.User;
 import com.example.conference.repository.Repository;
