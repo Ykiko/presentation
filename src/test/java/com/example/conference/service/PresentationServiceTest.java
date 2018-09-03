@@ -37,15 +37,12 @@ class PresentationServiceTest {
     }
 
     @Test
-    void addPresentation() {
-Presentation presentation = new Presentation("Algebra", new Date(), new Date());
-        try {
-            presentationService.addPresentation(presentation, 1L);
+    void addPresentation() throws NoNameException {
+        Presentation presentation = new Presentation("Algebra", new Date(), new Date());
+        Presentation result = presentationService.addPresentation(presentation, 1L);
+        assertEquals(result, presentation, "Error create.");
+        assertTrue(repositoryPresent.findByNamepresentation("Algebra").isPresent(), "Presentation is null.");
 
-            assertTrue(repositoryPresent.findByNamepresentation("Algebra").isPresent(), "Presentation is null.");
-        } catch (NoNameException e) {
-            e.printStackTrace();
-        }
-        //assertEquals();
+
     }
 }
