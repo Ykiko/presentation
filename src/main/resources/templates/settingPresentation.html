@@ -3,59 +3,81 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns="http://www.w3.org/1999/html">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"/>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>Update Presentation</title>
 </head>
 <body>
-<h1> Update a Presentation: </h1>
-
 <form th:action="@{/updatePresentation/{id}(id=${presentation.id})}"
       th:object="${presentation}" method="post">
-    Name Presentation:
-    <input type="text" th:field="*{namepresentation}" th:value="${presentation.namepresentation}" required/>
-    <br/><br/>
-    <p>
-        <label for="localdate1"> Date and time start: </label>
-        <input id="localdate1" type="datetime-local" th:field="*{startdate}"/>
-    </p>
-    <p>
-        <label for="localdate2"> Date and time the end: </label>
-        <input id="localdate2" type="datetime-local" th:field="*{enddate}"/>
-    </p>
-    <br/><br/>
-    Choosing a Presenter:
-    <table class="table table-bordered">
-        <tr th:each="user : ${users}">
-            <td>
-                <input type="checkbox"
-                       th:field="${presentation.users}"
-                       th:checked="${true}"
-                       th:value="${user.id}">
-                <label th:utext="${user.firstname}"></label>
-                <label th:utext="${user.lastname}"></label>
-            </td>
-        </tr>
-    </table>
-    <br/><br/>
-    Choosing a room:
-    <table class="table table-bordered">
-        <tr th:each="room : ${rooms}">
-            <td>
-                <input type="radio"
-                       th:field="${presentation.room}"
-                       th:checked="${true}"
-                       th:value="${room.id}"/>
-                <label th:utext="${room}"></label>
-            </td>
-    </table>
-    <br/>
-    <input type="submit" value="Create"/>
-    <br/><br/>
-    <a th:href="@{/deletePresentation/(id=${presentation.id})}"> Delete </a>
-</form>
-<div th:if="${errorMessage}" th:utext="${errorMessage}"
-     style="color:red; font-style:italic;">
+    <div class="text-center mb-7">
+        <h2 class="mb-3 font-weight-normal">Update a Presentation</h2>
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col">
+                    <a class="btn btn-outline-warning" th:href="@{/deletePresentation/(id=${presentation.id})}">
+                        Delete </a>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label>Name Presentation</label>
+                    <input type="text" class="form-control" th:field="*{namepresentation}"
+                           th:value="${presentation.namepresentation}"
+                           required/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <p>
+                        <label for="localdate1"> Date and time start: </label>
+                        <input class="form-control" id="localdate1" type="datetime-local" th:field="*{startdate}"
+                               required/>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        <label for="localdate2"> Date and time the end: </label>
+                        <input class="form-control" id="localdate2" type="datetime-local" th:field="*{enddate}"
+                               required/>
+                    </p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label>Choosing a Presenter</label>
+                    <div class="custom-control custom-checkbox"
+                         th:each="user : ${users}">
+                        <td>
+                            <input type="checkbox"
+                                   th:field="${presentation.users}"
+                                   th:checked="${true}"
+                                   th:value="${user.id}">
+                            <label th:utext="${user.firstname}"></label>
+                            <label th:utext="${user.lastname}"></label>
+                        </td>
+                    </div>
+                </div>
+                <div class="col">
+                    <label>Choosing a room</label>
+                    <div class="custom-control custom-radio"
+                         th:each="room : ${rooms}">
+                        <td>
+                            <input type="radio"
+                                   th:field="${presentation.room}"
+                                   th:checked="${true}"
+                                   th:value="${room.id}"/>
+                            <label th:utext="${room}"></label>
+                        </td>
+                    </div>
+                </div>
+            </div>
 
-</div>
+        </div>
+    </div>
+</form>
 </body>
 </html>

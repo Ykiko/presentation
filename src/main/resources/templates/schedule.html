@@ -1,39 +1,58 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>schedule</title>
 </head>
 <body>
-<h1>Schedule of presentations</h1>
-<br/><br/>
-<a href="hello"> Log in to your account </a> &nbsp &nbsp
-<br/><br/>
-<a href="registrationUser"> Registration </a>
-<br/><br/>
-<a href="ListOfUsers"> Users </a>
-<br/><br/>
-<a href="listOfPresentations"> List of presentations </a> &nbsp &nbsp
-<a href="addPresentation"> Add Presentation </a>
-<br/><br/>
-<a href="rooms"> Rooms</a>
-<br/><br/>
-
-<div>
-    <table border="3">
-        <tr>
-            <th> Presentation title </th>
-            <th> Classroom </th>
-            <th> Start date </th>
-            <th> End date </th>
-        </tr>
-        <tr th:each="presentation : ${presentations}">
-            <td th:utext="${presentation.namepresentation}"></td>
-            <td th:utext="${presentation.room}"> </td>
-            <td th:utext="${presentation.startdate}"></td>
-            <td th:utext="${presentation.enddate}"></td>
-        </tr>
-    </table>
+<div class="text-center mb-7">
+    <h2 class="mb-3 font-weight-normal">Schedule of presentations</h2>
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col">
+                <a class="btn btn-outline-primary" href="hello"> Log in to your account </a>
+            </div>
+            <div class="col">
+                <a class="btn btn-outline-secondary" href="registrationUser"> Registration </a>
+            </div>
+            <div class="col">
+                <a class="btn btn-outline-info" href="ListOfUsers"> Users </a>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col">
+                <a class="btn btn-outline-info" href="listOfPresentations"> List of presentations </a>
+            </div>
+            <div class="col">
+                <a class="btn btn-outline-secondary" href="addPresentation"> Add Presentation </a>
+            </div>
+            <div class="col">
+                <a class="btn btn-outline-warning" href="rooms"> Rooms</a>
+            </div>
+        </div>
+    </div>
+    <div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th> Presentation title</th>
+                <th> Classroom</th>
+                <th> Start date</th>
+                <th> End date</th>
+            </tr>
+            </thead>
+            <tr th:each="presentation : ${presentations}">
+                <td th:utext="${presentation.namepresentation}"></td>
+                <td th:utext="${presentation.room}"></td>
+                <td th:utext="${presentation.startdate}"></td>
+                <td th:utext="${presentation.enddate}"></td>
+            </tr>
+        </table>
+    </div>
 </div>
 </body>
 </html>

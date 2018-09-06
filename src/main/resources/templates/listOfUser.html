@@ -1,55 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-      xmlns="http://www.w3.org/1999/html">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"/>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>User Profile</title>
 </head>
 <body>
-<h1>User Profile</h1>
-<br><br>
-<a href="/ListOfUsers"> List of Users </a>
-<br><br>
-<a th:href="@{/updateUser/{id}(id=${user.id})}">Update User</a>
-<br><br>
-<a th:href="@{/deleteUser/(id=${user.id})}"> Delete</a>
-<br/><br/>
-<form th:action="@{/hello}" method="post">
-    <input type="submit" value="Sign out of your account"/>
-</form>
-<br/><br/>
-<table border="3">
-    <tr>
-        <td>Id</td>
-        <td th:text="${user.id}"></td>
-    </tr>
-    <tr>
-        <td>First Name</td>
-        <td th:text="${user.firstname}"></td>
-    </tr>
-    <tr>
-        <td>Last Name</td>
-        <td th:text="${user.lastname}"></td>
-    </tr>
-    <tr>
-        <td>Age</td>
-        <td th:text="${user.age}"></td>
-    </tr>
-    <tr>
-        <td>Email</td>
-        <td th:text="${user.email}"></td>
-    </tr>
-    <tr>
-        <td>Login</td>
-        <td th:text="${user.username}"></td>
-    </tr>
-    <tr>
-        <td>Role</td>
-        <td th:text="${user.role}"></td>
-    </tr>
-</table>
-<br>
+<div class="text-center mb-7">
+    <h2 class="mb-3 font-weight-normal">User Profile</h2>
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col">
+                <a class="btn btn-outline-danger" href="/ListOfUsers">Back</a>
+            </div>
+            <div class="col">
+                <a class="btn btn-outline-secondary" th:href="@{/updateUser/{id}(id=${user.id})}">Update User</a>
+            </div>
+            <div class="col">
+                <a class="btn btn-outline-warning" th:href="@{/deleteUser/(id=${user.id})}"> Delete</a>
+            </div>
+        </div>
+        <form th:action="@{/hello}" method="post">
+            <div class="mb-3">
+                <button type="submit" class="btn btn-outline-primary">Sign out of your account</button>
+            </div>
+        </form>
+        <div class="col">
+            <table class="table table-bordered table-dark">
+                <tr>
+                    <td>Id</td>
+                    <td th:text="${user.id}"></td>
+                </tr>
+                <tr>
+                    <td>First Name</td>
+                    <td th:text="${user.firstname}"></td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td th:text="${user.lastname}"></td>
+                </tr>
+                <tr>
+                    <td>Age</td>
+                    <td th:text="${user.age}"></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td th:text="${user.email}"></td>
+                </tr>
+                <tr>
+                    <td>Login</td>
+                    <td th:text="${user.username}"></td>
+                </tr>
+                <tr>
+                    <td>Role</td>
+                    <td th:text="${user.role}"></td>
+                </tr>
+            </table>
+        </div>
 </body>
 </html>
