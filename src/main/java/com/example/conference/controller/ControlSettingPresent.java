@@ -52,7 +52,6 @@ public class ControlSettingPresent {
     @RequestMapping(value = {"/updatePresentation/{id}"}, method = RequestMethod.GET)
     public String updatePresentation(@PathVariable("id") Long id, Model model) {
         model.addAttribute("presentation", repositoryPresent.getById(id));
-        model.addAttribute("presentations", repositoryPresent.findAll());
         model.addAttribute("users", repository.findAll());
         model.addAttribute("rooms", repositoryRoom.findAll());
         return "settingPresentation";
@@ -60,7 +59,7 @@ public class ControlSettingPresent {
 
     @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/updatePresentation/{id}"}, method = RequestMethod.POST)
-    public String updatePresent(Model model, @PathVariable("id") Long id,
+    public String updatePresent(@PathVariable("id") Long id,
                                 @ModelAttribute("presentation") Presentation presentation,
                                 @ModelAttribute("room") Long roomId) {
         String namepresentation = presentation.getNamepresentation();
@@ -68,6 +67,7 @@ public class ControlSettingPresent {
         Date enddate = presentation.getEnddate();
         Optional<Presentation> editPresentation = repositoryPresent.findById(id);
         Optional<Room> newRoom = repositoryRoom.findById(roomId);
+        Interval currentIntervar = new Interval(startdate.getTime(), enddate.getTime());
 
         if (!namepresentation.isEmpty() && editPresentation.isPresent() && newRoom.isPresent()) {
 
@@ -81,7 +81,6 @@ public class ControlSettingPresent {
                 }
 
                 Interval itemInterval = new Interval(item.getStartdate().getTime(), item.getEnddate().getTime());
-                Interval currentIntervar = new Interval(startdate.getTime(), enddate.getTime());
 
                 if (itemInterval.overlaps(currentIntervar)) {
                     return errorMessage8;
@@ -95,7 +94,6 @@ public class ControlSettingPresent {
             currentPresentation.setRoom(expectedRoom);
             repositoryPresent.save(currentPresentation);
         }
-//        model.addAttribute("errorMessage", errorMessage5);
         return "redirect:/listOfPresentations";
     }
 

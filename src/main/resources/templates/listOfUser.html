@@ -20,9 +20,7 @@
             <div class="col">
                 <a class="btn btn-outline-secondary" th:href="@{/updateUser/{id}(id=${user.id})}">Update User</a>
             </div>
-            <div class="col">
-                <a class="btn btn-outline-warning" th:href="@{/deleteUser/(id=${user.id})}"> Delete</a>
-            </div>
+
         </div>
         <form th:action="@{/hello}" method="post">
             <div class="mb-3">

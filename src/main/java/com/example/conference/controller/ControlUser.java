@@ -1,6 +1,6 @@
 package com.example.conference.controller;
 
-import antlr.StringUtils;
+import com.example.conference.NoNameException;
 import com.example.conference.entity.ROLE;
 import com.example.conference.entity.User;
 import com.example.conference.repository.Repository;
@@ -11,13 +11,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class ControlUser {
@@ -47,7 +41,7 @@ public class ControlUser {
     }
 
     @RequestMapping(value = {"/registrationUser"}, method = RequestMethod.POST)
-    public String saveUser(Model model, @ModelAttribute("user") User user) {
+    public String saveUser(Model model, @ModelAttribute("user") User user) throws NoNameException {
 
         String firstname = user.getFirstname();
         String lastname = user.getLastname();
@@ -56,15 +50,14 @@ public class ControlUser {
         String username = user.getUsername();
         String password = "{bcrypt}" + new BCryptPasswordEncoder().encode(user.getPassword());
 
-
         if (!firstname.isEmpty() && !lastname.isEmpty()) {
 
-            List<String> nameStr = new ArrayList<>();
-            repository.findAll().forEach(item -> {
-                nameStr.add(item.getUsername());
-            });
-            if(nameStr.contains(username)) {
-                return errorMessage3;
+            for (User item : repository.findAll()) {
+
+                if (firstname.equals(item.getFirstname()) && lastname.equals(item.getLastname())) {
+
+                    throw new NoNameException("Error:" + errorMessage3);
+                }
             }
             User newUser = repository.save(new User(firstname, lastname, age, email, username, password));
 
@@ -81,13 +74,11 @@ public class ControlUser {
     }
 
     @Secured(ROLE.ROLE_ADMIN)
-    @RequestMapping(value = {"/deleteUser"}, params = {"id"}, method = RequestMethod.GET)
-    public String deleteUser(Model model, @RequestParam("id") Long id) {
+    @RequestMapping(value = {"/deleteUser/{id}"}, method = RequestMethod.GET)
+    public String deleteUser(@PathVariable("id") Long id) {
 
         repository.deleteById(id);
 
         return "redirect:/ListOfUsers";
     }
 }
-
-

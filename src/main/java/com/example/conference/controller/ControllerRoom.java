@@ -1,5 +1,6 @@
 package com.example.conference.controller;
 
+import com.example.conference.NoNameException;
 import com.example.conference.entity.ROLE;
 import com.example.conference.entity.Room;
 import com.example.conference.repository.RepositoryRoom;
@@ -12,9 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class ControllerRoom {
@@ -45,15 +43,16 @@ public class ControllerRoom {
     }
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/addRoom"}, method = RequestMethod.POST)
-    public String saveRoom(Model model, @ModelAttribute("room") Room room) {
+    public String saveRoom(Model model, @ModelAttribute("room") Room room) throws NoNameException {
         String nameroom = room.getRoom();
+
         if (!nameroom.isEmpty()) {
-            List<String> nameroom1 = new ArrayList<>();
-            repositoryRoom.findAll().forEach(item -> {
-                nameroom1.add(item.getRoom());
-            });
-            if (nameroom1.contains(nameroom)) {
-                return errorMessage6;
+            for (Room item : repositoryRoom.findAll()) {
+
+                if (nameroom.equals(item.getRoom())) {
+
+                    throw new NoNameException("Error:" + errorMessage6);
+                }
             }
             Room newRoom = new Room(nameroom);
             repositoryRoom.save(newRoom);

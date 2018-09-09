@@ -22,7 +22,7 @@ databaseChangeLog:
             constraints:
               nullable: false
             name: age
-            type: NUMERIC
+            type: BIGINT
         - column:
             name: email
             type: VARCHAR(255)

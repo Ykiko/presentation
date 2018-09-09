@@ -1,6 +1,4 @@
-package com.example.conference.entity;
-
-import org.springframework.beans.factory.annotation.Value;
+package com.example.conference;
 
 public class NoNameException extends Exception{
 
@@ -9,10 +7,6 @@ public class NoNameException extends Exception{
     public NoNameException(String errorName) {
         error1 = errorName;
     }
-
-   /* public NoNamePresentationException() {
-
-    }*/
 
     @Override
     public String toString() {

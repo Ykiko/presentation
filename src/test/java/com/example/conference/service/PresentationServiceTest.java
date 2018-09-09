@@ -1,6 +1,6 @@
 package com.example.conference.service;
 
-import com.example.conference.entity.NoNameException;
+import com.example.conference.NoNameException;
 import com.example.conference.entity.Presentation;
 import com.example.conference.repository.RepositoryPresent;
 import com.example.conference.repository.RepositoryRoom;

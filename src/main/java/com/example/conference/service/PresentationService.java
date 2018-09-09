@@ -1,6 +1,6 @@
 package com.example.conference.service;
 
-import com.example.conference.entity.NoNameException;
+import com.example.conference.NoNameException;
 import com.example.conference.entity.Presentation;
 import com.example.conference.entity.Room;
 import com.example.conference.repository.RepositoryPresent;
@@ -33,11 +33,12 @@ public class PresentationService {
         this.repositoryRoom = repositoryRoom;
     }
 
-    public Presentation addPresentation(/*Model model,*/ Presentation presentation, Long roomId) throws NoNameException {
+    public Presentation addPresentation(Presentation presentation, Long roomId) throws NoNameException {
         String namepresentation = presentation.getNamepresentation();
         Date startdate = presentation.getStartdate();
         Date enddate = presentation.getEnddate();
         Optional<Room> newRoom = repositoryRoom.findById(roomId);
+        Interval currentIntervar = new Interval(startdate.getTime(), enddate.getTime());
 
         if (!namepresentation.isEmpty() && newRoom.isPresent()) {
 
@@ -50,19 +51,16 @@ public class PresentationService {
                     throw new NoNameException("Error:" + errorMessage4);
                 }
 
-                // check time overlap
                 Interval itemInterval = new Interval(item.getStartdate().getTime(), item.getEnddate().getTime());
-                Interval currentIntervar = new Interval(startdate.getTime(), enddate.getTime());
 
+                //for (Room item1 : repositoryRoom.findAll()) {
 
-                for (Room item1 : repositoryRoom.findAll()) {
-
-                    if (itemInterval.overlaps(currentIntervar) && expectedRoom.equals(item1)) {
+                    if (itemInterval.overlaps(currentIntervar) && expectedRoom.equals(presentation.getRoom())) {
 
                         throw new NoNameException("Error:" + errorMessage8);
 
                     }
-                }
+                //}
             }
             Presentation newPresentation = new Presentation(namepresentation, startdate, enddate);
             newPresentation.setRoom(expectedRoom);

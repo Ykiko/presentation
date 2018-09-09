@@ -3,7 +3,6 @@ package com.example.conference.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Room")
 public class Room {
 
     @Id

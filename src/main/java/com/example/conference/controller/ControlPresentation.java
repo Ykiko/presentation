@@ -1,6 +1,6 @@
 package com.example.conference.controller;
 
-import com.example.conference.entity.NoNameException;
+import com.example.conference.NoNameException;
 import com.example.conference.entity.Presentation;
 import com.example.conference.entity.ROLE;
 import com.example.conference.repository.RepositoryPresent;
@@ -10,13 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Objects;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class ControlPresentation {
@@ -37,7 +31,6 @@ public class ControlPresentation {
     public String addPresentation(Model model) {
         Presentation presentation = new Presentation();
         model.addAttribute("presentation", presentation);
-        model.addAttribute("presentations", repositoryPresent.findAll());
         model.addAttribute("rooms", repositoryRoom.findAll());
         return "/addPresentation";
     }
@@ -58,8 +51,8 @@ public class ControlPresentation {
     }
 
     @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
-    @RequestMapping(value = {"/deletePresentation"}, params = {"id"}, method = RequestMethod.GET)
-    public String deletePresentation(@RequestParam("id") Long id) {
+    @RequestMapping(value = {"/deletePresentation/{id}"}, method = RequestMethod.GET)
+    public String deletePresentation(@PathVariable("id") Long id) {
 
         repositoryPresent.deleteById(id);
 

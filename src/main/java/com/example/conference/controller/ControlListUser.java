@@ -35,7 +35,7 @@ public class ControlListUser {
     @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.GET)
     public String updateUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", repository.getById(id));
-        model.addAttribute("roles", Arrays.asList(ROLE.ADMIN.toString(), ROLE.PRESENTER.toString(), ROLE.LISTENER.toString()));
+        model.addAttribute("roles", Arrays.toString(ROLE.values()));
         return "settingUser";
     }
 

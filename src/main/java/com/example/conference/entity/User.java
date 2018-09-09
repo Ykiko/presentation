@@ -15,7 +15,7 @@ public class User implements Serializable {
     private Long id;
     private String firstname;
     private String lastname;
-    private int age;
+    private Integer age;
     private String email;
     private String username;
     private String password;
@@ -23,7 +23,7 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String firstname, String lastname, int age, String email, String username, String password) {
+    public User(String firstname, String lastname, Integer age, String email, String username, String password) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.age = age;
@@ -32,7 +32,7 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public User(ROLE role, String firstname, String lastname, int age, String email, String username, String password) {
+    public User(ROLE role, String firstname, String lastname, Integer age, String email, String username, String password) {
         this.role = role;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -73,11 +73,11 @@ public class User implements Serializable {
         this.lastname = lastname;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
