@@ -9,12 +9,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
@@ -27,6 +29,9 @@ class PresentationServiceTest {
     RoomRepository roomRepository;
     @Autowired
     PresentationRepository presentationRepository;
+
+    @Value("${error.message4}")
+    private String errorMessage4;
 
     @BeforeEach
     void setUp() {
@@ -45,10 +50,11 @@ class PresentationServiceTest {
     }
 
     @Test
-    void addPresentation1() throws NoNameException {
+    void addPresentation1() {
         Presentation presentation = new Presentation("Biology", new Date(), new Date());
-        Presentation result = presentationService.addPresentation(presentation, 2L);
-        assertEquals(result.getRoom().getId(), Long.valueOf(2L), "Error create.");
-        assertTrue(presentationRepository.findByNamepresentation("Biology").isPresent(), "Presentation is null.");
+        Throwable exception = assertThrows(NoNameException.class,() -> {
+            presentationService.addPresentation(presentation, 2L);
+        });
+        assertEquals("Error:Presentation is already in use!", exception.getMessage());
     }
 }

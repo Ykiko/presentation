@@ -5,6 +5,7 @@ public class NoNameException extends Exception{
     private String error1;
 
     public NoNameException(String errorName) {
+        super(errorName);
         error1 = errorName;
     }
 
