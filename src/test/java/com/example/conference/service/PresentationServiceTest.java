@@ -43,4 +43,12 @@ class PresentationServiceTest {
         assertEquals(result.getRoom().getId(), Long.valueOf(1L), "Error create.");
         assertTrue(presentationRepository.findByNamepresentation("Algebra").isPresent(), "Presentation is null.");
     }
+
+    @Test
+    void addPresentation1() throws NoNameException {
+        Presentation presentation = new Presentation("Biology", new Date(), new Date());
+        Presentation result = presentationService.addPresentation(presentation, 2L);
+        assertEquals(result.getRoom().getId(), Long.valueOf(2L), "Error create.");
+        assertTrue(presentationRepository.findByNamepresentation("Biology").isPresent(), "Presentation is null.");
+    }
 }
