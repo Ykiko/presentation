@@ -1,5 +1,7 @@
 package com.example.conference.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -111,5 +113,9 @@ public class User implements Serializable {
 
     public void setRole(ROLE role) {
         this.role = role;
+    }
+
+    public boolean getRole(String roleListener) {
+        return true;
     }
 }

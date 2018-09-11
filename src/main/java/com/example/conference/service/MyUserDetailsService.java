@@ -30,7 +30,7 @@ public class MyUserDetailsService implements UserDetailsService {
         UserDetails loadedUser;
 
         try {
-            User client = repository.findByUsername(username);
+            User client = repository.findByUsername(username).orElseThrow(Exception::new);
             loadedUser = new org.springframework.security.core.userdetails.User(
                     client.getUsername(), client.getPassword(),
                     Collections.singleton(client.getRole()));

@@ -67,7 +67,7 @@ public class ControlUser {
 
                 mailSend.send(user.getEmail(), "Welcome", message);
             }
-            return "redirect:/listOfUser/" + newUser.getId();
+            return "redirect:/schedule";
         }
         model.addAttribute("errorMessage", errorMessage1);
         return "/registrationUser";

@@ -39,6 +39,8 @@
         <table class="table table-bordered">
             <thead class="thead-dark">
             <tr>
+                <th> Audition record </th>
+                <th> Listener </th>
                 <th> Presentation title</th>
                 <th> Classroom</th>
                 <th> Start date</th>
@@ -46,6 +48,11 @@
             </tr>
             </thead>
             <tr th:each="presentation : ${presentations}">
+                <td><a th:href="@{/auditionRecord/{id}(id=${presentation.id})}"> Record</a></td>
+                <td> <span th:each="listener : ${presentation.listeners} "
+                           th:utext="${listener.firstname} + ' ' + ${listener.lastname} + '; '">
+                </span>
+                </td>
                 <td th:utext="${presentation.namepresentation}"></td>
                 <td th:utext="${presentation.room}"></td>
                 <td th:utext="${presentation.startdate}"></td>
