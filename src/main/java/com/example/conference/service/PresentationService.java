@@ -3,8 +3,8 @@ package com.example.conference.service;
 import com.example.conference.NoNameException;
 import com.example.conference.entity.Presentation;
 import com.example.conference.entity.Room;
-import com.example.conference.repository.RepositoryPresent;
-import com.example.conference.repository.RepositoryRoom;
+import com.example.conference.repository.PresentationRepository;
+import com.example.conference.repository.RoomRepository;
 import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,8 +16,8 @@ import java.util.Optional;
 @Service
 public class PresentationService {
 
-    private final RepositoryPresent repositoryPresent;
-    private final RepositoryRoom repositoryRoom;
+    private final PresentationRepository presentationRepository;
+    private final RoomRepository roomRepository;
 
     @Value("${error.message4}")
     private String errorMessage4;
@@ -28,23 +28,23 @@ public class PresentationService {
 
 
     @Autowired
-    public PresentationService(RepositoryPresent repositoryPresent, RepositoryRoom repositoryRoom) {
-        this.repositoryPresent = repositoryPresent;
-        this.repositoryRoom = repositoryRoom;
+    public PresentationService(PresentationRepository presentationRepository, RoomRepository roomRepository) {
+        this.presentationRepository = presentationRepository;
+        this.roomRepository = roomRepository;
     }
 
     public Presentation addPresentation(Presentation presentation, Long roomId) throws NoNameException {
         String namepresentation = presentation.getNamepresentation();
         Date startdate = presentation.getStartdate();
         Date enddate = presentation.getEnddate();
-        Optional<Room> newRoom = repositoryRoom.findById(roomId);
+        Optional<Room> newRoom = roomRepository.findById(roomId);
         Interval currentIntervar = new Interval(startdate.getTime(), enddate.getTime());
 
         if (!namepresentation.isEmpty() && newRoom.isPresent()) {
 
             Room expectedRoom = newRoom.get();
 
-            for (Presentation item : repositoryPresent.findAll()) {
+            for (Presentation item : presentationRepository.findAll()) {
 
                 if (namepresentation.equals(item.getNamepresentation())) {
 
@@ -53,18 +53,15 @@ public class PresentationService {
 
                 Interval itemInterval = new Interval(item.getStartdate().getTime(), item.getEnddate().getTime());
 
-                //for (Room item1 : repositoryRoom.findAll()) {
-
                     if (itemInterval.overlaps(currentIntervar) && expectedRoom.equals(presentation.getRoom())) {
 
                         throw new NoNameException("Error:" + errorMessage8);
 
                     }
-                //}
             }
             Presentation newPresentation = new Presentation(namepresentation, startdate, enddate);
             newPresentation.setRoom(expectedRoom);
-            repositoryPresent.save(newPresentation);
+            presentationRepository.save(newPresentation);
             return newPresentation;
         }
         throw new NoNameException("Error:" + errorMessage5);

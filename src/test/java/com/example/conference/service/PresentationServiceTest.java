@@ -2,8 +2,8 @@ package com.example.conference.service;
 
 import com.example.conference.NoNameException;
 import com.example.conference.entity.Presentation;
-import com.example.conference.repository.RepositoryPresent;
-import com.example.conference.repository.RepositoryRoom;
+import com.example.conference.repository.PresentationRepository;
+import com.example.conference.repository.RoomRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,9 +24,9 @@ class PresentationServiceTest {
     @Autowired
     PresentationService presentationService;
     @Autowired
-    RepositoryRoom repositoryRoom;
+    RoomRepository roomRepository;
     @Autowired
-    RepositoryPresent repositoryPresent;
+    PresentationRepository presentationRepository;
 
     @BeforeEach
     void setUp() {
@@ -40,9 +40,7 @@ class PresentationServiceTest {
     void addPresentation() throws NoNameException {
         Presentation presentation = new Presentation("Algebra", new Date(), new Date());
         Presentation result = presentationService.addPresentation(presentation, 1L);
-        assertEquals(result, presentation, "Error create.");
-        assertTrue(repositoryPresent.findByNamepresentation("Algebra").isPresent(), "Presentation is null.");
-
-
+        assertEquals(result.getRoom().getId(), Long.valueOf(1L), "Error create.");
+        assertTrue(presentationRepository.findByNamepresentation("Algebra").isPresent(), "Presentation is null.");
     }
 }

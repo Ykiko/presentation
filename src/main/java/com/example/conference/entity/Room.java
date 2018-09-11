@@ -1,8 +1,15 @@
 package com.example.conference.entity;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 
 @Entity
+@Data
+@NoArgsConstructor
+@ToString
 public class Room {
 
     @Id
@@ -10,32 +17,8 @@ public class Room {
     private Long id;
     private String room;
 
-    public Room() {
-    }
-
     public Room(String room) {
         this.room = room;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRoom() {
-        return room;
-    }
-
-    public void setRoom(String room) {
-        this.room = room;
-    }
-
-    @Override
-    public String toString() {
-        return "Room{" + room + '\'' +
-                '}';
-    }
 }

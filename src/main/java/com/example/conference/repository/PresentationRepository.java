@@ -7,8 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface RepositoryPresent extends CrudRepository <Presentation, Long> {
-    Presentation getById(Long id);
+public interface PresentationRepository extends CrudRepository <Presentation, Long> {
     List<Presentation> findByRoom(Room room);
     Optional<Presentation> findByNamepresentation(String namepresentation);
 }

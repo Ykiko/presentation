@@ -1,11 +1,12 @@
 package com.example.conference.controller;
 
+import com.example.conference.NoNameException;
 import com.example.conference.entity.Presentation;
 import com.example.conference.entity.ROLE;
 import com.example.conference.entity.Room;
-import com.example.conference.repository.Repository;
-import com.example.conference.repository.RepositoryPresent;
-import com.example.conference.repository.RepositoryRoom;
+import com.example.conference.repository.RoomRepository;
+import com.example.conference.repository.UserRepository;
+import com.example.conference.repository.PresentationRepository;
 import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,17 +18,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.swing.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class ControlSettingPresent {
-    private RepositoryPresent repositoryPresent;
-    private Repository repository;
-    private RepositoryRoom repositoryRoom;
+public class SettingPresentationController {
+    private PresentationRepository presentationRepository;
+    private UserRepository userRepository;
+    private RoomRepository roomRepository;
 
     @Value("${error.message5}")
     private String errorMessage5;
@@ -35,25 +33,25 @@ public class ControlSettingPresent {
     private String errorMessage8;
 
     @Autowired
-    public ControlSettingPresent(RepositoryPresent repositoryPresent, Repository repository, RepositoryRoom repositoryRoom) {
-        this.repositoryPresent = repositoryPresent;
-        this.repository = repository;
-        this.repositoryRoom = repositoryRoom;
+    public SettingPresentationController(PresentationRepository presentationRepository, UserRepository userRepository, RoomRepository roomRepository) {
+        this.presentationRepository = presentationRepository;
+        this.userRepository = userRepository;
+        this.roomRepository = roomRepository;
     }
 
     @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/listOfPresentations"}, method = RequestMethod.GET)
     public String listOfPresentation(Model model) {
-        model.addAttribute("presentations", repositoryPresent.findAll());
+        model.addAttribute("presentations", presentationRepository.findAll());
         return "/listOfPresentations";
     }
 
     @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/updatePresentation/{id}"}, method = RequestMethod.GET)
     public String updatePresentation(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("presentation", repositoryPresent.getById(id));
-        model.addAttribute("users", repository.findAll());
-        model.addAttribute("rooms", repositoryRoom.findAll());
+        model.addAttribute("presentation", presentationRepository.findById(id));
+        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("rooms", roomRepository.findAll());
         return "settingPresentation";
     }
 
@@ -61,12 +59,12 @@ public class ControlSettingPresent {
     @RequestMapping(value = {"/updatePresentation/{id}"}, method = RequestMethod.POST)
     public String updatePresent(@PathVariable("id") Long id,
                                 @ModelAttribute("presentation") Presentation presentation,
-                                @ModelAttribute("room") Long roomId) {
+                                @ModelAttribute("room") Long roomId) throws NoNameException {
         String namepresentation = presentation.getNamepresentation();
         Date startdate = presentation.getStartdate();
         Date enddate = presentation.getEnddate();
-        Optional<Presentation> editPresentation = repositoryPresent.findById(id);
-        Optional<Room> newRoom = repositoryRoom.findById(roomId);
+        Optional<Presentation> editPresentation = presentationRepository.findById(id);
+        Optional<Room> newRoom = roomRepository.findById(roomId);
         Interval currentIntervar = new Interval(startdate.getTime(), enddate.getTime());
 
         if (!namepresentation.isEmpty() && editPresentation.isPresent() && newRoom.isPresent()) {
@@ -74,7 +72,7 @@ public class ControlSettingPresent {
             Presentation currentPresentation = editPresentation.get();
             Room expectedRoom = newRoom.get();
 
-            for (Presentation item : repositoryPresent.findByRoom(expectedRoom)) {
+            for (Presentation item : presentationRepository.findByRoom(expectedRoom)) {
 
                 if (item == currentPresentation) {
                     continue;
@@ -83,7 +81,7 @@ public class ControlSettingPresent {
                 Interval itemInterval = new Interval(item.getStartdate().getTime(), item.getEnddate().getTime());
 
                 if (itemInterval.overlaps(currentIntervar)) {
-                    return errorMessage8;
+                    throw new NoNameException("Error:" + errorMessage8);
                 }
             }
 
@@ -92,7 +90,7 @@ public class ControlSettingPresent {
             currentPresentation.setStartdate(startdate);
             currentPresentation.setEnddate(enddate);
             currentPresentation.setRoom(expectedRoom);
-            repositoryPresent.save(currentPresentation);
+            presentationRepository.save(currentPresentation);
         }
         return "redirect:/listOfPresentations";
     }

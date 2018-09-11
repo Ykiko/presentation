@@ -2,7 +2,7 @@ package com.example.conference.controller;
 
 import com.example.conference.entity.ROLE;
 import com.example.conference.entity.User;
-import com.example.conference.repository.Repository;
+import com.example.conference.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -16,25 +16,25 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Controller
-public class ControlListUser {
+public class ListofUserController {
 
-    private Repository repository;
+    private UserRepository userRepository;
 
     @Autowired
-    public ControlListUser(Repository repository){
-        this.repository = repository;
+    public ListofUserController(UserRepository userRepository){
+        this.userRepository = userRepository;
     }
 
     @RequestMapping(value = {"/listOfUser/{id}"}, method = RequestMethod.GET)
     public String listOfUser(@PathVariable ("id") Long id, Model model) {
-        model.addAttribute("user", repository.getById(id));
+        model.addAttribute("user", userRepository.findById(id));
         return "listOfUser";
     }
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.GET)
     public String updateUser(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", repository.getById(id));
+        model.addAttribute("user", userRepository.findById(id));
         model.addAttribute("roles", Arrays.toString(ROLE.values()));
         return "settingUser";
     }
@@ -43,12 +43,12 @@ public class ControlListUser {
     @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.POST)
     public String saveUser(@PathVariable("id") Long id,
                            @ModelAttribute("user") User user) {
-        Optional<User> editUser = repository.findById(id);
+        Optional<User> editUser = userRepository.findById(id);
         if (editUser.isPresent()) {
             User currentUser = editUser.get();
             user.setId(currentUser.getId());
             user.setPassword(currentUser.getPassword());
-            repository.save(user);
+            userRepository.save(user);
         }
         return "redirect:/listOfUser/" + user.getId();
     }

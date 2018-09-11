@@ -2,6 +2,7 @@ package com.example.conference.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Table(name = "presentation")
 @Data
 @NoArgsConstructor
+@ToString
 public class Presentation implements Serializable {
 
     @ManyToOne

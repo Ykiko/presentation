@@ -7,10 +7,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class ConferenceApplicationTests {
+class ConferenceApplicationTests {
 
     @org.junit.jupiter.api.Test
-    public void contextLoads() {
+    void contextLoads() {
     }
 
 }

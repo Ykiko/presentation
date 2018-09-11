@@ -1,28 +1,26 @@
 package com.example.conference.service;
 
 import com.example.conference.entity.User;
-import com.example.conference.repository.Repository;
+import com.example.conference.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+
+import static org.springframework.boot.system.SystemProperties.get;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-    private final Repository repository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public MyUserDetailsService(Repository repository) {
-        this.repository = repository;
+    public MyUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -30,7 +28,7 @@ public class MyUserDetailsService implements UserDetailsService {
         UserDetails loadedUser;
 
         try {
-            User client = repository.findByUsername(username).orElseThrow(Exception::new);
+            User client = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(get()));
             loadedUser = new org.springframework.security.core.userdetails.User(
                     client.getUsername(), client.getPassword(),
                     Collections.singleton(client.getRole()));

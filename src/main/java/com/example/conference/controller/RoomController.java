@@ -3,7 +3,7 @@ package com.example.conference.controller;
 import com.example.conference.NoNameException;
 import com.example.conference.entity.ROLE;
 import com.example.conference.entity.Room;
-import com.example.conference.repository.RepositoryRoom;
+import com.example.conference.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class ControllerRoom {
-    private RepositoryRoom repositoryRoom;
+public class RoomController {
+    private RoomRepository roomRepository;
 
     @Value("${error.message6}")
     private String errorMessage6;
@@ -24,12 +24,14 @@ public class ControllerRoom {
     private String errorMessage7;
 
     @Autowired
-    public ControllerRoom (RepositoryRoom repositoryRoom) {this.repositoryRoom = repositoryRoom;}
+    public RoomController(RoomRepository roomRepository) {
+        this.roomRepository = roomRepository;
+    }
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/rooms"}, method = RequestMethod.GET)
     public String listOfRoom(Model model) {
-        model.addAttribute("rooms", repositoryRoom.findAll());
+        model.addAttribute("rooms", roomRepository.findAll());
         return "/rooms";
     }
 
@@ -38,16 +40,17 @@ public class ControllerRoom {
     public String addRoom(Model model) {
         Room room = new Room();
         model.addAttribute("room", room);
-        model.addAttribute("rooms",  repositoryRoom.findAll());
+        model.addAttribute("rooms", roomRepository.findAll());
         return "/addRoom";
     }
+
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/addRoom"}, method = RequestMethod.POST)
-    public String saveRoom(Model model, @ModelAttribute("room") Room room) throws NoNameException {
+    public String saveRoom(@ModelAttribute("room") Room room) throws NoNameException {
         String nameroom = room.getRoom();
 
         if (!nameroom.isEmpty()) {
-            for (Room item : repositoryRoom.findAll()) {
+            for (Room item : roomRepository.findAll()) {
 
                 if (nameroom.equals(item.getRoom())) {
 
@@ -55,18 +58,17 @@ public class ControllerRoom {
                 }
             }
             Room newRoom = new Room(nameroom);
-            repositoryRoom.save(newRoom);
+            roomRepository.save(newRoom);
             return "redirect:/rooms";
         }
-        model.addAttribute("errorMessage", errorMessage7);
-        return "/addRoom";
+        throw new NoNameException("Error:" + errorMessage7);
     }
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/deleteRoom"}, params = {"id"}, method = RequestMethod.GET)
-    public String deleteRoom(Model model, @RequestParam("id") Long id) {
+    public String deleteRoom(@RequestParam("id") Long id) {
 
-        repositoryRoom.deleteById(id);
+        roomRepository.deleteById(id);
 
         return "redirect:/rooms";
     }
