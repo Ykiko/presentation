@@ -42,7 +42,7 @@ public class RoomService {
             }
             Room newRoom = new Room(nameroom);
             roomRepository.save(newRoom);
-        }
+        } else
         throw new NoRoomException("Error:" + errorMessage7);
     }
     public void deleteIdRoom(@PathVariable("id") Long id) throws Exception {
