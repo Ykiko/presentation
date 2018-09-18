@@ -1,17 +1,17 @@
-package com.example.conference;
+package com.example.conference.MyException;
 
-public class NoNameException extends Exception{
+public class PresentationException extends Exception{
 
     private String error1;
 
-    public NoNameException(String errorName) {
+    public PresentationException(String errorName) {
         super(errorName);
         error1 = errorName;
     }
 
     @Override
     public String toString() {
-        return "NoNamePresentationException{" +
+        return "PresentationException{" +
                 "error1='" + error1 + '\'' +
                 '}';
     }
