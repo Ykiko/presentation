@@ -1,14 +1,11 @@
 package com.example.conference.controller;
 
-import com.example.conference.MyException.NotFoundException;
 import com.example.conference.entity.Presentation;
 import com.example.conference.entity.ROLE;
-import com.example.conference.repository.PresentationRepository;
-import com.example.conference.repository.RoomRepository;
-import com.example.conference.repository.UserRepository;
 import com.example.conference.service.PresentationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import com.example.conference.service.RoomService;
+import com.example.conference.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,27 +14,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+@RequiredArgsConstructor
 @Controller
 public class PresentationController {
-    private PresentationRepository presentationRepository;
-    private RoomRepository roomRepository;
-    private UserRepository userRepository;
-    private final PresentationService presentationService;
 
-    @Autowired
-    public PresentationController(PresentationRepository presentationRepository, RoomRepository roomRepository, UserRepository userRepository, PresentationService presentationService) {
-        this.presentationRepository = presentationRepository;
-        this.roomRepository = roomRepository;
-        this.userRepository = userRepository;
-        this.presentationService = presentationService;
-    }
+    private final RoomService roomService;
+    private final PresentationService presentationService;
+    private final UserService userService;
+
 
     @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/addPresentation"}, method = RequestMethod.GET)
     public String addPresentation(Model model) {
         Presentation presentation = new Presentation();
         model.addAttribute("presentation", presentation);
-        model.addAttribute("rooms", roomRepository.findAll());
+        model.addAttribute("rooms", roomService.findAll());
         return "/addPresentation";
     }
 
@@ -53,16 +44,16 @@ public class PresentationController {
     @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/listOfPresentations"}, method = RequestMethod.GET)
     public String listOfPresentation(Model model) {
-        model.addAttribute("presentations", presentationRepository.findAll());
+        model.addAttribute("presentations", presentationService.findAll());
         return "/listOfPresentations";
     }
 
     @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/updatePresentation/{id}"}, method = RequestMethod.GET)
     public String updatePresentation(@PathVariable("id") Long id, Model model) {
-        presentationRepository.findById(id).ifPresent(o -> model.addAttribute("presentation", o));
-        model.addAttribute("users", userRepository.findAll());
-        model.addAttribute("rooms", roomRepository.findAll());
+        presentationService.findById(id).ifPresent(o -> model.addAttribute("presentation", o));
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("rooms", roomService.findAll());
         return "settingPresentation";
     }
 

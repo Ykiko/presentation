@@ -38,7 +38,7 @@ public class ScheduleService {
                 if (userOptional.isPresent()) {
                     User user = userOptional.get();
                     boolean checkListener = false;
-                    if(schedule.get().getListeners().contains(user)) {
+                    if (schedule.get().getListeners().contains(user)) {
                         checkListener = true;
                     }
                     if (!checkListener) {

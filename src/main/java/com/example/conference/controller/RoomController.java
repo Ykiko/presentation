@@ -2,9 +2,8 @@ package com.example.conference.controller;
 
 import com.example.conference.entity.ROLE;
 import com.example.conference.entity.Room;
-import com.example.conference.repository.RoomRepository;
 import com.example.conference.service.RoomService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,21 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+@RequiredArgsConstructor
 @Controller
 public class RoomController {
-    private RoomRepository roomRepository;
     private final RoomService roomService;
-
-    @Autowired
-    public RoomController(RoomRepository roomRepository, RoomService roomService) {
-        this.roomRepository = roomRepository;
-        this.roomService = roomService;
-    }
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/rooms"}, method = RequestMethod.GET)
     public String listOfRoom(Model model) {
-        model.addAttribute("rooms", roomRepository.findAll());
+        model.addAttribute("rooms", roomService.findAll());
         return "/rooms";
     }
 
@@ -36,7 +29,7 @@ public class RoomController {
     public String addRoom(Model model) {
         Room room = new Room();
         model.addAttribute("room", room);
-        model.addAttribute("rooms", roomRepository.findAll());
+        model.addAttribute("rooms", roomService.findAll());
         return "/addRoom";
     }
 

@@ -12,6 +12,7 @@ import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -40,20 +41,20 @@ public class PresentationService {
         this.roomRepository = roomRepository;
     }
 
-    public void addPresentation(Presentation presentation, Long roomId) throws NoNamePresentationException, CoincidesTimeException, PresentationException{
-        String namepresentation = presentation.getNamepresentation();
+    public void addPresentation(Presentation presentation, Long roomId) throws NoNamePresentationException, CoincidesTimeException, PresentationException {
+        String presentationName = presentation.getNamepresentation();
         Date startdate = presentation.getStartdate();
         Date enddate = presentation.getEnddate();
         Optional<Room> newRoom = roomRepository.findById(roomId);
         Interval currentIntervar = new Interval(startdate.getTime(), enddate.getTime());
 
-        if (!namepresentation.isEmpty() && newRoom.isPresent()) {
+        if (!StringUtils.isEmpty(presentationName) && newRoom.isPresent()) {
 
             Room expectedRoom = newRoom.get();
 
             for (Presentation item : presentationRepository.findAll()) {
 
-                if (namepresentation.equals(item.getNamepresentation())) {
+                if (presentationName.equals(item.getNamepresentation())) {
 
                     throw new NoNamePresentationException("Error:" + errorMessage4);
                 }
@@ -66,16 +67,17 @@ public class PresentationService {
 
                 }
             }
-            Presentation newPresentation = new Presentation(namepresentation, startdate, enddate);
+            Presentation newPresentation = new Presentation(presentationName, startdate, enddate);
             newPresentation.setRoom(expectedRoom);
             presentationRepository.save(newPresentation);
-        } else
-        throw new PresentationException("Error:" + errorMessage5);
+        } else {
+            throw new PresentationException("Error:" + errorMessage5);
+        }
     }
 
     public void updateSetPresentation(@PathVariable("id") Long id,
-                                @ModelAttribute("presentation") Presentation presentation,
-                                @ModelAttribute("room") Long roomId) throws  CoincidesTimeException {
+                                      @ModelAttribute("presentation") Presentation presentation,
+                                      @ModelAttribute("room") Long roomId) throws CoincidesTimeException {
         String namepresentation = presentation.getNamepresentation();
         Date startdate = presentation.getStartdate();
         Date enddate = presentation.getEnddate();
@@ -113,7 +115,12 @@ public class PresentationService {
     public void deleteIdPresentation(@PathVariable("id") Long id) throws Exception {
         if (id != null) {
             presentationRepository.deleteById(id);
-        }
-        else throw new NotFoundException("Error:" + errorMessage9);
+        } else throw new NotFoundException("Error:" + errorMessage9);
     }
+
+    public Iterable<Presentation> findAll(){
+        return presentationRepository.findAll();
+    }
+
+    public Optional<Presentation> findById(Long id) { return  presentationRepository.findById(id);}
 }

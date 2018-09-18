@@ -1,11 +1,11 @@
 package com.example.conference.controller;
 
 import com.example.conference.entity.ROLE;
-import com.example.conference.repository.PresentationRepository;
-import com.example.conference.repository.RoomRepository;
-import com.example.conference.repository.UserRepository;
+import com.example.conference.service.PresentationService;
+import com.example.conference.service.RoomService;
 import com.example.conference.service.ScheduleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.conference.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -14,31 +14,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+@RequiredArgsConstructor
 @Controller
-
 public class ScheduleController {
-    private PresentationRepository presentationRepository;
-    private RoomRepository roomRepository;
-    private UserRepository userRepository;
+
     private final ScheduleService scheduleService;
+    private final PresentationService presentationService;
+    private final RoomService roomService;
+    private final UserService userService;
 
     @Value("${welcome.message}")
     private String message;
 
-    @Autowired
-    public ScheduleController(RoomRepository roomRepository, PresentationRepository presentationRepository, UserRepository userRepository, ScheduleService scheduleService) {
-        this.presentationRepository = presentationRepository;
-        this.roomRepository = roomRepository;
-        this.userRepository = userRepository;
-        this.scheduleService = scheduleService;
-    }
-
     @RequestMapping(value = {"/schedule", "/"}, method = RequestMethod.GET)
     public String start(Model model) {
         model.addAttribute("Message", message);
-        model.addAttribute("presentations", presentationRepository.findAll());
-        model.addAttribute("rooms", roomRepository.findAll());
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("presentations", presentationService.findAll());
+        model.addAttribute("rooms", roomService.findAll());
+        model.addAttribute("users", userService.findAll());
         return "/schedule";
     }
 

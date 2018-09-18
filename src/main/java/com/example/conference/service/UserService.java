@@ -2,6 +2,7 @@ package com.example.conference.service;
 
 import com.example.conference.MyException.NoNameUserException;
 import com.example.conference.MyException.NotFoundException;
+import com.example.conference.entity.Presentation;
 import com.example.conference.entity.User;
 import com.example.conference.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ public class UserService {
                 mailSend.send(user.getEmail(), "Welcome", message);
             }
         } else
-        throw new NoNameUserException("Error:" + errorMessage1);
+            throw new NoNameUserException("Error:" + errorMessage1);
     }
 
     public void updateSetUser(@PathVariable("id") Long id,
@@ -75,10 +76,15 @@ public class UserService {
             userRepository.save(user);
         }
     }
+
     public void deleteIdUser(@PathVariable("id") Long id) throws Exception {
         if (id != null) {
             userRepository.deleteById(id);
-        }
-        else throw new NotFoundException("Error:" + errorMessage9);
+        } else throw new NotFoundException("Error:" + errorMessage9);
     }
+
+    public Iterable<User> findAll() {
+        return userRepository.findAll();
+    }
+    public Optional<User> findById(Long id) { return  userRepository.findById(id);}
 }
