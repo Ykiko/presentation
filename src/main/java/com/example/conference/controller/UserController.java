@@ -1,5 +1,7 @@
 package com.example.conference.controller;
 
+import com.example.conference.MyException.NoNameUserException;
+import com.example.conference.MyException.NotFoundException;
 import com.example.conference.entity.ROLE;
 import com.example.conference.entity.User;
 import com.example.conference.service.UserService;
@@ -20,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @RequestMapping(value = {"/registrationUser"}, method = RequestMethod.GET)
-    public String addUser(Model model) {
+    public String AddUser(Model model) {
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("users", userService.findAll());
@@ -28,8 +30,8 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/registrationUser"}, method = RequestMethod.POST)
-    public String addUser(@ModelAttribute("user") User user) throws Exception {
-        userService.saveUser(user);
+    public String AddUser(@ModelAttribute("user") User user) throws NoNameUserException {
+        userService.SaveUser(user);
         return "redirect:/schedule";
     }
 
@@ -41,14 +43,14 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/listOfUser/{id}"}, method = RequestMethod.GET)
-    public String listOfUser(@PathVariable ("id") Long id, Model model) {
+    public String ListOfUser(@PathVariable ("id") Long id, Model model) {
         userService.findById(id).ifPresent(o -> model.addAttribute("user", o));
         return "listOfUser";
     }
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.GET)
-    public String updateUser(@PathVariable("id") Long id, Model model) {
+    public String UpdateUser(@PathVariable("id") Long id, Model model) {
         userService.findById(id).ifPresent(o -> model.addAttribute("user", o));
         model.addAttribute("roles", Arrays.toString(ROLE.values()));
         return "settingUser";
@@ -56,16 +58,16 @@ public class UserController {
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.POST)
-    public String updateUser(@PathVariable("id") Long id,
+    public String UpdateUser(@PathVariable("id") Long id,
                            @ModelAttribute("user") User user) {
-        userService.updateSetUser(id, user);
+        userService.UpdateSetUser(id, user);
         return "redirect:/listOfUser/" + user.getId();
     }
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/deleteUser/{id}"}, method = RequestMethod.GET)
-    public String deleteUser(@PathVariable("id") Long id) throws Exception {
-        userService.deleteIdUser(id);
+    public String DeleteUser(@PathVariable("id") Long id) throws NotFoundException {
+        userService.DeleteIdUser(id);
         return "redirect:/ListOfUsers";
     }
 }

@@ -19,15 +19,14 @@ import java.util.Optional;
 public class UserService {
 
     private UserRepository userRepository;
-
     private final MailSend mailSend;
 
-    @Value("${error.message1}")
-    private String errorMessage1;
-    @Value("${error.message3}")
-    private String errorMessage3;
-    @Value("${error.message9}")
-    private String errorMessage9;
+    @Value("${error.message.userIsRequired}")
+    private String errorMessageUserIsRequired;
+    @Value("${error.message.loginInUse}")
+    private String errorMessageLoginInUse;
+    @Value("${error.message.notFound}")
+    private String errorMessageNotFound;
 
     @Autowired
     public UserService(UserRepository userRepository, MailSend mailSend) {
@@ -35,7 +34,7 @@ public class UserService {
         this.mailSend = mailSend;
     }
 
-    public void saveUser(@ModelAttribute("user") User user) throws NoNameUserException {
+    public void SaveUser(@ModelAttribute("user") User user) throws NoNameUserException {
 
         String firstname = user.getFirstname();
         String lastname = user.getLastname();
@@ -50,7 +49,7 @@ public class UserService {
 
                 if (firstname.equals(item.getFirstname()) && lastname.equals(item.getLastname())) {
 
-                    throw new NoNameUserException("Error:" + errorMessage3);
+                    throw new NoNameUserException(errorMessageLoginInUse);
                 }
             }
             User newUser = new User(firstname, lastname, age, email, username, password);
@@ -63,10 +62,10 @@ public class UserService {
                 mailSend.send(user.getEmail(), "Welcome", message);
             }
         } else
-            throw new NoNameUserException("Error:" + errorMessage1);
+            throw new NoNameUserException(errorMessageUserIsRequired);
     }
 
-    public void updateSetUser(@PathVariable("id") Long id,
+    public void UpdateSetUser(@PathVariable("id") Long id,
                               @ModelAttribute("user") User user) {
         Optional<User> editUser = userRepository.findById(id);
         if (editUser.isPresent()) {
@@ -77,14 +76,19 @@ public class UserService {
         }
     }
 
-    public void deleteIdUser(@PathVariable("id") Long id) throws Exception {
+    public void DeleteIdUser(@PathVariable("id") Long id) throws NotFoundException {
         if (id != null) {
             userRepository.deleteById(id);
-        } else throw new NotFoundException("Error:" + errorMessage9);
+        } else {
+            throw new NotFoundException(errorMessageNotFound);
+        }
     }
 
     public Iterable<User> findAll() {
         return userRepository.findAll();
     }
-    public Optional<User> findById(Long id) { return  userRepository.findById(id);}
+
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
 }

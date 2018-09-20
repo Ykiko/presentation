@@ -20,5 +20,4 @@ public class Room {
     public Room(String room) {
         this.room = room;
     }
-
 }

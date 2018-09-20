@@ -1,9 +1,6 @@
 package com.example.conference.service;
 
-import com.example.conference.MyException.CoincidesTimeException;
-import com.example.conference.MyException.NoNamePresentationException;
-import com.example.conference.MyException.NotFoundException;
-import com.example.conference.MyException.PresentationException;
+import com.example.conference.MyException.*;
 import com.example.conference.entity.Presentation;
 import com.example.conference.entity.Room;
 import com.example.conference.repository.PresentationRepository;
@@ -25,14 +22,14 @@ public class PresentationService {
     private final PresentationRepository presentationRepository;
     private final RoomRepository roomRepository;
 
-    @Value("${error.message4}")
-    private String errorMessage4;
-    @Value("${error.message5}")
-    private String errorMessage5;
-    @Value("${error.message8}")
-    private String errorMessage8;
-    @Value("${error.message9}")
-    private String errorMessage9;
+    @Value("${error.message.presentationInUse}")
+    private String errorMessagePresentationInUse;
+    @Value("${error.message.presentationIsRequired}")
+    private String errorMessagePresentationIsRequired;
+    @Value("${error.message.dateInUse}")
+    private String errorMessageDateInUse;
+    @Value("${error.message.notFound}")
+    private String errorMessageNotFound;
 
 
     @Autowired
@@ -41,56 +38,52 @@ public class PresentationService {
         this.roomRepository = roomRepository;
     }
 
-    public void addPresentation(Presentation presentation, Long roomId) throws NoNamePresentationException, CoincidesTimeException, PresentationException {
+    public Presentation AddPresentation(Presentation presentation, Long roomId) throws PresentationAlreadyExistsException, CoincidesTimeException, PresentationException, NoRoomException {
         String presentationName = presentation.getNamepresentation();
         Date startdate = presentation.getStartdate();
         Date enddate = presentation.getEnddate();
-        Optional<Room> newRoom = roomRepository.findById(roomId);
+        Room newRoom = roomRepository.findById(roomId).orElseThrow(NoRoomException::new);
         Interval currentIntervar = new Interval(startdate.getTime(), enddate.getTime());
 
-        if (!StringUtils.isEmpty(presentationName) && newRoom.isPresent()) {
-
-            Room expectedRoom = newRoom.get();
-
-            for (Presentation item : presentationRepository.findAll()) {
-
-                if (presentationName.equals(item.getNamepresentation())) {
-
-                    throw new NoNamePresentationException("Error:" + errorMessage4);
-                }
-
-                Interval itemInterval = new Interval(item.getStartdate().getTime(), item.getEnddate().getTime());
-
-                if (itemInterval.overlaps(currentIntervar) && expectedRoom.equals(presentation.getRoom())) {
-
-                    throw new CoincidesTimeException("Error:" + errorMessage8);
-
-                }
-            }
-            Presentation newPresentation = new Presentation(presentationName, startdate, enddate);
-            newPresentation.setRoom(expectedRoom);
-            presentationRepository.save(newPresentation);
-        } else {
-            throw new PresentationException("Error:" + errorMessage5);
+        if (StringUtils.isEmpty(presentationName)) {
+            throw new PresentationException(errorMessagePresentationIsRequired);
         }
+
+        if (presentationRepository.findByNamepresentation(presentationName).isPresent()) {
+            throw new PresentationAlreadyExistsException(errorMessagePresentationInUse + presentationName);
+        }
+
+        for (Presentation item : presentationRepository.findByRoom(newRoom)) {
+
+            Room itemRoom = item.getRoom();
+            Interval itemInterval = new Interval(item.getStartdate().getTime(), item.getEnddate().getTime());
+
+            if (itemInterval.overlaps(currentIntervar) && itemRoom.equals(presentation.getRoom())) {
+
+                throw new CoincidesTimeException(errorMessageDateInUse);
+            }
+        }
+        Presentation newPresentation = new Presentation(presentationName, startdate, enddate);
+        newPresentation.setRoom(newRoom);
+        presentationRepository.save(newPresentation);
+        return newPresentation;
     }
 
-    public void updateSetPresentation(@PathVariable("id") Long id,
+    public void UpdateSetPresentation(@PathVariable("id") Long id,
                                       @ModelAttribute("presentation") Presentation presentation,
-                                      @ModelAttribute("room") Long roomId) throws CoincidesTimeException {
+                                      @ModelAttribute("room") Long roomId) throws CoincidesTimeException, NoRoomException {
         String namepresentation = presentation.getNamepresentation();
         Date startdate = presentation.getStartdate();
         Date enddate = presentation.getEnddate();
         Optional<Presentation> editPresentation = presentationRepository.findById(id);
-        Optional<Room> newRoom = roomRepository.findById(roomId);
+        Room newRoom = roomRepository.findById(roomId).orElseThrow(NoRoomException::new);
         Interval currentIntervar = new Interval(startdate.getTime(), enddate.getTime());
 
-        if (!namepresentation.isEmpty() && editPresentation.isPresent() && newRoom.isPresent()) {
+        if (!namepresentation.isEmpty() && editPresentation.isPresent()) {
 
             Presentation currentPresentation = editPresentation.get();
-            Room expectedRoom = newRoom.get();
 
-            for (Presentation item : presentationRepository.findByRoom(expectedRoom)) {
+            for (Presentation item : presentationRepository.findByRoom(newRoom)) {
 
                 if (item == currentPresentation) {
                     continue;
@@ -99,7 +92,7 @@ public class PresentationService {
                 Interval itemInterval = new Interval(item.getStartdate().getTime(), item.getEnddate().getTime());
 
                 if (itemInterval.overlaps(currentIntervar)) {
-                    throw new CoincidesTimeException("Error:" + errorMessage8);
+                    throw new CoincidesTimeException(errorMessageDateInUse);
                 }
             }
 
@@ -107,20 +100,22 @@ public class PresentationService {
             currentPresentation.setUsers(presentation.getUsers());
             currentPresentation.setStartdate(startdate);
             currentPresentation.setEnddate(enddate);
-            currentPresentation.setRoom(expectedRoom);
+            currentPresentation.setRoom(newRoom);
             presentationRepository.save(currentPresentation);
         }
     }
 
-    public void deleteIdPresentation(@PathVariable("id") Long id) throws Exception {
+    public void DeleteIdPresentation(@PathVariable("id") Long id) throws NotFoundException {
         if (id != null) {
             presentationRepository.deleteById(id);
-        } else throw new NotFoundException("Error:" + errorMessage9);
+        } else throw new NotFoundException(errorMessageNotFound);
     }
 
-    public Iterable<Presentation> findAll(){
+    public Iterable<Presentation> findAll() {
         return presentationRepository.findAll();
     }
 
-    public Optional<Presentation> findById(Long id) { return  presentationRepository.findById(id);}
+    public Optional<Presentation> findById(Long id) {
+        return presentationRepository.findById(id);
+    }
 }

@@ -19,15 +19,15 @@ public class ScheduleService {
     private PresentationRepository presentationRepository;
     private UserRepository userRepository;
 
-    @Value("${error.message2}")
-    private String errorMessage2;
+    @Value("${error.message.userNotFound}")
+    private String errorMessageUserNotFound;
 
     public ScheduleService(PresentationRepository presentationRepository, UserRepository userRepository) {
         this.presentationRepository = presentationRepository;
         this.userRepository = userRepository;
     }
 
-    public void Audition(@PathVariable("id") Long id) throws Exception {
+    public void Audition(@PathVariable("id") Long id) throws NoNameUserException {
 
         Optional<Presentation> schedule = presentationRepository.findById(id);
         if (schedule.isPresent()) {
@@ -49,7 +49,7 @@ public class ScheduleService {
                     }
                 }
             } else {
-                throw new NoNameUserException("Error:" + errorMessage2);
+                throw new NoNameUserException(errorMessageUserNotFound);
             }
         }
     }

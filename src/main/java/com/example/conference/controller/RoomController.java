@@ -1,5 +1,8 @@
 package com.example.conference.controller;
 
+import com.example.conference.MyException.NoRoomException;
+import com.example.conference.MyException.NotFoundException;
+import com.example.conference.MyException.RoomException;
 import com.example.conference.entity.ROLE;
 import com.example.conference.entity.Room;
 import com.example.conference.service.RoomService;
@@ -19,14 +22,14 @@ public class RoomController {
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/rooms"}, method = RequestMethod.GET)
-    public String listOfRoom(Model model) {
+    public String ListOfRoom(Model model) {
         model.addAttribute("rooms", roomService.findAll());
         return "/rooms";
     }
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/addRoom"}, method = RequestMethod.GET)
-    public String addRoom(Model model) {
+    public String AddRoom(Model model) {
         Room room = new Room();
         model.addAttribute("room", room);
         model.addAttribute("rooms", roomService.findAll());
@@ -35,15 +38,15 @@ public class RoomController {
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/addRoom"}, method = RequestMethod.POST)
-    public String addRoom(@ModelAttribute("room") Room room) throws Exception {
-        roomService.saveRoom(room);
+    public String AddRoom(@ModelAttribute("room") Room room) throws RoomException, NoRoomException {
+        roomService.SaveRoom(room);
         return "redirect:/rooms";
     }
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/deleteRoom"}, params = {"id"}, method = RequestMethod.GET)
-    public String deleteRoom(@RequestParam("id") Long id) throws Exception {
-        roomService.deleteIdRoom(id);
+    public String DeleteRoom(@RequestParam("id") Long id) throws NotFoundException {
+        roomService.DeleteIdRoom(id);
         return "redirect:/rooms";
     }
 

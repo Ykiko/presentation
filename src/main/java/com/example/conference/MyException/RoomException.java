@@ -1,18 +1,14 @@
 package com.example.conference.MyException;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class RoomException extends Exception{
 
-    private String error1;
-
     public RoomException(String errorName) {
-        super(errorName);
-        error1 = errorName;
+        super("RoomException{" +
+                "Error:'" + errorName + '\'' +
+                '}');
     }
 
-    @Override
-    public String toString() {
-        return "RoomException{" +
-                "error1='" + error1 + '\'' +
-                '}';
-    }
 }

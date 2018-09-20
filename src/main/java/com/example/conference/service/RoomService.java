@@ -17,12 +17,12 @@ import java.util.Optional;
 @Service
 public class RoomService {
 
-    @Value("${error.message6}")
-    private String errorMessage6;
-    @Value("${error.message7}")
-    private String errorMessage7;
-    @Value("${error.message9}")
-    private String errorMessage9;
+    @Value("${error.message.roomInUse}")
+    private String errorMessageRoomInUse;
+    @Value("${error.message.roomIsRequired}")
+    private String errorMessageRoomIsRequired;
+    @Value("${error.message.notFound}")
+    private String errorMessageNotFound;
 
     private RoomRepository roomRepository;
 
@@ -32,7 +32,7 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public void saveRoom(@ModelAttribute("room") Room room) throws RoomException, NoRoomException {
+    public void SaveRoom(@ModelAttribute("room") Room room) throws RoomException, NoRoomException {
         String nameroom = room.getRoom();
 
         if (!nameroom.isEmpty()) {
@@ -40,20 +40,20 @@ public class RoomService {
 
                 if (nameroom.equals(item.getRoom())) {
 
-                    throw new RoomException("Error:" + errorMessage6);
+                    throw new RoomException(errorMessageRoomInUse);
                 }
             }
             Room newRoom = new Room(nameroom);
             roomRepository.save(newRoom);
         } else
-        throw new NoRoomException("Error:" + errorMessage7);
+        throw new NoRoomException(errorMessageRoomIsRequired);
     }
 
-    public void deleteIdRoom(@PathVariable("id") Long id) throws Exception {
+    public void DeleteIdRoom(@PathVariable("id") Long id) throws NotFoundException {
         if (id != null) {
             roomRepository.deleteById(id);
         }
-        else throw new NotFoundException("Error:" + errorMessage9);
+        else throw new NotFoundException(errorMessageNotFound);
     }
 
     public Iterable<Room> findAll(){
