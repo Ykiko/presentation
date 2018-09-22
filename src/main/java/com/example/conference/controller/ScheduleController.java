@@ -1,6 +1,6 @@
 package com.example.conference.controller;
 
-import com.example.conference.MyException.NoNameUserException;
+import com.example.conference.myException.UserNameProblemException;
 import com.example.conference.entity.ROLE;
 import com.example.conference.service.PresentationService;
 import com.example.conference.service.RoomService;
@@ -28,7 +28,7 @@ public class ScheduleController {
     private String message;
 
     @RequestMapping(value = {"/schedule", "/"}, method = RequestMethod.GET)
-    public String Start(Model model) {
+    public String start(Model model) {
         model.addAttribute("Message", message);
         model.addAttribute("presentations", presentationService.findAll());
         model.addAttribute("rooms", roomService.findAll());
@@ -38,9 +38,9 @@ public class ScheduleController {
 
     @Secured({ROLE.ROLE_LISTENER, ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/auditionRecord/{id}"}, method = RequestMethod.GET)
-    public String AuditionRecord(@PathVariable("id") Long id) throws NoNameUserException {
+    public String auditionRecord(@PathVariable("id") Long id) throws UserNameProblemException {
 
-        scheduleService.Audition(id);
+        scheduleService.audition(id);
         return "redirect:/schedule";
     }
 }

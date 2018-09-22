@@ -1,7 +1,7 @@
 package com.example.conference.controller;
 
-import com.example.conference.MyException.NoNameUserException;
-import com.example.conference.MyException.NotFoundException;
+import com.example.conference.myException.NotFoundException;
+import com.example.conference.myException.UserNameProblemException;
 import com.example.conference.entity.ROLE;
 import com.example.conference.entity.User;
 import com.example.conference.service.UserService;
@@ -22,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @RequestMapping(value = {"/registrationUser"}, method = RequestMethod.GET)
-    public String AddUser(Model model) {
+    public String addUser(Model model) {
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("users", userService.findAll());
@@ -30,27 +30,27 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/registrationUser"}, method = RequestMethod.POST)
-    public String AddUser(@ModelAttribute("user") User user) throws NoNameUserException {
-        userService.SaveUser(user);
+    public String addUser(@ModelAttribute("user") User user) throws UserNameProblemException {
+        userService.saveUser(user);
         return "redirect:/schedule";
     }
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/ListOfUsers"}, method = RequestMethod.GET)
-    public String ListOfUsers(Model model) {
+    public String listOfUsers(Model model) {
         model.addAttribute("users", userService.findAll());
         return "/ListOfUsers";
     }
 
     @RequestMapping(value = {"/listOfUser/{id}"}, method = RequestMethod.GET)
-    public String ListOfUser(@PathVariable ("id") Long id, Model model) {
+    public String listOfUser(@PathVariable ("id") Long id, Model model) {
         userService.findById(id).ifPresent(o -> model.addAttribute("user", o));
         return "listOfUser";
     }
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.GET)
-    public String UpdateUser(@PathVariable("id") Long id, Model model) {
+    public String updateUser(@PathVariable("id") Long id, Model model) {
         userService.findById(id).ifPresent(o -> model.addAttribute("user", o));
         model.addAttribute("roles", Arrays.toString(ROLE.values()));
         return "settingUser";
@@ -58,16 +58,16 @@ public class UserController {
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.POST)
-    public String UpdateUser(@PathVariable("id") Long id,
+    public String updateUser(@PathVariable("id") Long id,
                            @ModelAttribute("user") User user) {
-        userService.UpdateSetUser(id, user);
+        userService.updateSetUser(id, user);
         return "redirect:/listOfUser/" + user.getId();
     }
 
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/deleteUser/{id}"}, method = RequestMethod.GET)
-    public String DeleteUser(@PathVariable("id") Long id) throws NotFoundException {
-        userService.DeleteIdUser(id);
+    public String deleteUser(@PathVariable("id") Long id) throws NotFoundException {
+        userService.deleteIdUser(id);
         return "redirect:/ListOfUsers";
     }
 }

@@ -1,6 +1,6 @@
 package com.example.conference.service;
 
-import com.example.conference.MyException.NoNameUserException;
+import com.example.conference.myException.UserNameProblemException;
 import com.example.conference.entity.Presentation;
 import com.example.conference.entity.User;
 import com.example.conference.repository.PresentationRepository;
@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
@@ -27,7 +26,7 @@ public class ScheduleService {
         this.userRepository = userRepository;
     }
 
-    public void Audition(@PathVariable("id") Long id) throws NoNameUserException {
+    public void audition(Long id) throws UserNameProblemException {
 
         Optional<Presentation> schedule = presentationRepository.findById(id);
         if (schedule.isPresent()) {
@@ -49,7 +48,7 @@ public class ScheduleService {
                     }
                 }
             } else {
-                throw new NoNameUserException(errorMessageUserNotFound);
+                throw new UserNameProblemException(errorMessageUserNotFound);
             }
         }
     }

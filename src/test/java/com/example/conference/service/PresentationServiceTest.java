@@ -41,7 +41,7 @@ class PresentationServiceTest {
     @Test
     void AddPresentation() throws Exception {
         Presentation presentation = new Presentation("Algebra", new Date(), new Date());
-        Presentation result = presentationService.AddPresentation(presentation, 1L);
+        Presentation result = presentationService.addPresentation(presentation, 1L);
         assertEquals(result.getRoom().getId(), Long.valueOf(1L), "Error create.");
         assertTrue(presentationRepository.findByNamepresentation("Algebra").isPresent(), "Presentation is null.");
     }
@@ -50,7 +50,7 @@ class PresentationServiceTest {
     void AddPresentation1() {
         Presentation presentation = new Presentation("Biology", new Date(), new Date());
         Throwable exception = assertThrows(Exception.class,() -> {
-            presentationService.AddPresentation(presentation, 2L);
+            presentationService.addPresentation(presentation, 2L);
         });
         assertEquals("Error:Presentation is already in use!", exception.getMessage());
     }

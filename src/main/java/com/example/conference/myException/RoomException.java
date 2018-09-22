@@ -1,4 +1,4 @@
-package com.example.conference.MyException;
+package com.example.conference.myException;
 
 import lombok.NoArgsConstructor;
 
@@ -6,9 +6,7 @@ import lombok.NoArgsConstructor;
 public class RoomException extends Exception{
 
     public RoomException(String errorName) {
-        super("RoomException{" +
-                "Error:'" + errorName + '\'' +
-                '}');
+        super(errorName);
     }
 
 }

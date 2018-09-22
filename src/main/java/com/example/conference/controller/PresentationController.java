@@ -1,6 +1,6 @@
 package com.example.conference.controller;
 
-import com.example.conference.MyException.*;
+import com.example.conference.myException.*;
 import com.example.conference.entity.Presentation;
 import com.example.conference.entity.ROLE;
 import com.example.conference.service.PresentationService;
@@ -26,7 +26,7 @@ public class PresentationController {
 
     @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/addPresentation"}, method = RequestMethod.GET)
-    public String AddPresentation(Model model) {
+    public String addPresentation(Model model) {
         Presentation presentation = new Presentation();
         model.addAttribute("presentation", presentation);
         model.addAttribute("rooms", roomService.findAll());
@@ -35,23 +35,23 @@ public class PresentationController {
 
     @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/addPresentation"}, method = RequestMethod.POST)
-    public String SavePresentation(@ModelAttribute("presentation") Presentation presentation,
+    public String savePresentation(@ModelAttribute("presentation") Presentation presentation,
                                    @ModelAttribute("room") Long roomId) throws PresentationAlreadyExistsException, CoincidesTimeException, PresentationException, NoRoomException {
 
-        presentationService.AddPresentation(presentation, roomId);
+        presentationService.addPresentation(presentation, roomId);
         return "redirect:/schedule";
     }
 
     @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/listOfPresentations"}, method = RequestMethod.GET)
-    public String ListOfPresentation(Model model) {
+    public String listOfPresentation(Model model) {
         model.addAttribute("presentations", presentationService.findAll());
         return "/listOfPresentations";
     }
 
     @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/updatePresentation/{id}"}, method = RequestMethod.GET)
-    public String UpdatePresentation(@PathVariable("id") Long id, Model model) {
+    public String updatePresentation(@PathVariable("id") Long id, Model model) {
         presentationService.findById(id).ifPresent(o -> model.addAttribute("presentation", o));
         model.addAttribute("users", userService.findAll());
         model.addAttribute("rooms", roomService.findAll());
@@ -60,17 +60,17 @@ public class PresentationController {
 
     @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/updatePresentation/{id}"}, method = RequestMethod.POST)
-    public String UpdatePresentation(@PathVariable("id") Long id,
+    public String updatePresentation(@PathVariable("id") Long id,
                                      @ModelAttribute("presentation") Presentation presentation,
-                                     @ModelAttribute("room") Long roomId) throws CoincidesTimeException, NoRoomException {
-        presentationService.UpdateSetPresentation(id, presentation, roomId);
+                                     @ModelAttribute("room") Long roomId) throws CoincidesTimeException, NoRoomException, NotFoundException, PresentationAlreadyExistsException, PresentationException {
+        presentationService.updateSetPresentation(id, presentation, roomId);
         return "redirect:/listOfPresentations";
     }
 
     @Secured({ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/deletePresentation/{id}"}, method = RequestMethod.GET)
-    public String DeletePresentation(@PathVariable("id") Long id) throws NotFoundException {
-        presentationService.DeleteIdPresentation(id);
+    public String deletePresentation(@PathVariable("id") Long id) throws NotFoundException {
+        presentationService.deleteIdPresentation(id);
         return "redirect:/listOfPresentations";
     }
 }

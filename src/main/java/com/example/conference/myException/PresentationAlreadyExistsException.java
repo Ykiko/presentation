@@ -1,4 +1,4 @@
-package com.example.conference.MyException;
+package com.example.conference.myException;
 
 import lombok.NoArgsConstructor;
 
@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 public class PresentationAlreadyExistsException extends Exception{
 
     public PresentationAlreadyExistsException(String errorName) {
-        super("PresentationAlreadyExistsException{" +
-                "Error:'" + errorName + '\'' +
-                '}');
+        super(errorName);
     }
 }

@@ -1,8 +1,7 @@
 package com.example.conference.service;
 
-import com.example.conference.MyException.NoNameUserException;
-import com.example.conference.MyException.NotFoundException;
-import com.example.conference.entity.Presentation;
+import com.example.conference.myException.NotFoundException;
+import com.example.conference.myException.UserNameProblemException;
 import com.example.conference.entity.User;
 import com.example.conference.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
@@ -34,7 +31,7 @@ public class UserService {
         this.mailSend = mailSend;
     }
 
-    public void SaveUser(@ModelAttribute("user") User user) throws NoNameUserException {
+    public void saveUser(User user) throws UserNameProblemException {
 
         String firstname = user.getFirstname();
         String lastname = user.getLastname();
@@ -43,30 +40,29 @@ public class UserService {
         String username = user.getUsername();
         String password = "{bcrypt}" + new BCryptPasswordEncoder().encode(user.getPassword());
 
-        if (!firstname.isEmpty() && !lastname.isEmpty()) {
+        if (firstname.isEmpty() && lastname.isEmpty()) {
+            throw new UserNameProblemException(errorMessageUserIsRequired);
+        }
 
-            for (User item : userRepository.findAll()) {
+        for (User item : userRepository.findAll()) {
 
-                if (firstname.equals(item.getFirstname()) && lastname.equals(item.getLastname())) {
+            if (firstname.equals(item.getFirstname()) && lastname.equals(item.getLastname())) {
 
-                    throw new NoNameUserException(errorMessageLoginInUse);
-                }
+                throw new UserNameProblemException(errorMessageLoginInUse);
             }
-            User newUser = new User(firstname, lastname, age, email, username, password);
-            userRepository.save(newUser);
+        }
+        User newUser = new User(firstname, lastname, age, email, username, password);
+        userRepository.save(newUser);
 
-            if (!StringUtils.isEmpty(user.getEmail())) {
-                String message = String.format("Hello, %s! " +
-                        "Welcome to Presentation", user.getUsername());
+        if (!StringUtils.isEmpty(user.getEmail())) {
+            String message = String.format("Hello, %s! " +
+                    "Welcome to Presentation", user.getUsername());
 
-                mailSend.send(user.getEmail(), "Welcome", message);
-            }
-        } else
-            throw new NoNameUserException(errorMessageUserIsRequired);
+            mailSend.send(user.getEmail(), "Welcome", message);
+        }
     }
 
-    public void UpdateSetUser(@PathVariable("id") Long id,
-                              @ModelAttribute("user") User user) {
+    public void updateSetUser(Long id, User user) {
         Optional<User> editUser = userRepository.findById(id);
         if (editUser.isPresent()) {
             User currentUser = editUser.get();
@@ -76,7 +72,7 @@ public class UserService {
         }
     }
 
-    public void DeleteIdUser(@PathVariable("id") Long id) throws NotFoundException {
+    public void deleteIdUser(Long id) throws NotFoundException {
         if (id != null) {
             userRepository.deleteById(id);
         } else {
