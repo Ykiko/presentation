@@ -2,6 +2,7 @@ package com.example.conference.service;
 
 import com.example.conference.entity.Presentation;
 import com.example.conference.entity.User;
+import com.example.conference.exception.ListenerAlreadyRecordedException;
 import com.example.conference.exception.NotFoundException;
 import com.example.conference.repository.PresentationRepository;
 import com.example.conference.repository.UserRepository;
@@ -23,9 +24,9 @@ public class ScheduleService {
 
     private final PresentationRepository presentationRepository;
     private final UserRepository userRepository;
-    private String notFound;
+    private String listenerAlreadyRecorded;
 
-    public void audition(Long id) throws NotFoundException {
+    public void audition(Long id) throws NotFoundException, ListenerAlreadyRecordedException {
 
         Presentation schedule = presentationRepository.findById(id).orElseThrow(NotFoundException::new);
 
@@ -35,7 +36,7 @@ public class ScheduleService {
             User user = userRepository.findByUsername(username).orElseThrow(NotFoundException::new);
 
             if(schedule.getListeners().contains(user)) {
-                throw new NotFoundException(notFound);
+                throw new ListenerAlreadyRecordedException(listenerAlreadyRecorded);
             }
             schedule.getListeners().add(user);
             presentationRepository.save(schedule);

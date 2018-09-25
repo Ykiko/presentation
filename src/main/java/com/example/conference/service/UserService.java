@@ -28,6 +28,8 @@ public class UserService {
 
     private String notFound;
 
+    private String nameAlreadyUsed;
+
     public void saveUser(User user) throws UserNameProblemException {
 
         String firstname = user.getFirstname();
@@ -41,11 +43,11 @@ public class UserService {
             throw new UserNameProblemException(userIsRequired);
         }
 
-        for (User item : userRepository.findAll()) {
+        for (User item : userRepository.findByFirstnameAndLastname(firstname, lastname)) {
 
             if (firstname.equals(item.getFirstname()) && lastname.equals(item.getLastname())) {
 
-                throw new UserNameProblemException(loginInUse);
+                throw new UserNameProblemException(nameAlreadyUsed);
             }
         }
         User newUser = new User(firstname, lastname, age, email, username, password);

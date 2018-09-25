@@ -39,7 +39,7 @@ class PresentationServiceTest {
     }
 
     @Test
-    void AddPresentation() throws Exception {
+    void addPresentation() throws Exception {
         Presentation presentation = new Presentation("Algebra", new Date(), new Date());
         Presentation result = presentationService.addPresentation(presentation, 1L);
         assertEquals(result.getRoom().getId(), Long.valueOf(1L), "Error create.");
@@ -47,7 +47,7 @@ class PresentationServiceTest {
     }
 
     @Test
-    void AddPresentation1() {
+    void addPresentation1() {
         Presentation presentation = new Presentation("Biology", new Date(), new Date());
         Throwable exception = assertThrows(Exception.class,() -> {
             presentationService.addPresentation(presentation, 2L);
