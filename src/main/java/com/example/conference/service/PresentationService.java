@@ -1,13 +1,14 @@
 package com.example.conference.service;
 
-import com.example.conference.myException.*;
 import com.example.conference.entity.Presentation;
 import com.example.conference.entity.Room;
+import com.example.conference.exception.*;
 import com.example.conference.repository.PresentationRepository;
 import com.example.conference.repository.RoomRepository;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.joda.time.Interval;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -15,26 +16,21 @@ import java.util.Date;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+@ConfigurationProperties(prefix = "error.message")
+@Data
 public class PresentationService {
 
     private final PresentationRepository presentationRepository;
     private final RoomRepository roomRepository;
 
-    @Value("${error.message.presentationInUse}")
-    private String errorMessagePresentationInUse;
-    @Value("${error.message.presentationIsRequired}")
-    private String errorMessagePresentationIsRequired;
-    @Value("${error.message.dateInUse}")
-    private String errorMessageDateInUse;
-    @Value("${error.message.notFound}")
-    private String errorMessageNotFound;
+    private String presentationInUse;
 
+    private String presentationIsRequired;
 
-    @Autowired
-    public PresentationService(PresentationRepository presentationRepository, RoomRepository roomRepository) {
-        this.presentationRepository = presentationRepository;
-        this.roomRepository = roomRepository;
-    }
+    private String dateInUse;
+
+    private String notFound;
 
     public Presentation addPresentation(Presentation presentation, Long roomId) throws PresentationAlreadyExistsException, CoincidesTimeException, PresentationException, NoRoomException {
         String presentationName = presentation.getNamepresentation();
@@ -44,11 +40,11 @@ public class PresentationService {
         Interval currentIntervar = new Interval(startdate.getTime(), enddate.getTime());
 
         if (StringUtils.isEmpty(presentationName)) {
-            throw new PresentationException(errorMessagePresentationIsRequired);
+            throw new PresentationException(presentationIsRequired);
         }
 
         if (presentationRepository.findByNamepresentation(presentationName).isPresent()) {
-            throw new PresentationAlreadyExistsException(errorMessagePresentationInUse + presentationName);
+            throw new PresentationAlreadyExistsException(presentationInUse + " " + presentationName);
         }
 
         for (Presentation item : presentationRepository.findByRoom(newRoom)) {
@@ -57,7 +53,7 @@ public class PresentationService {
             Interval itemInterval = new Interval(item.getStartdate().getTime(), item.getEnddate().getTime());
 
             if (itemInterval.overlaps(currentIntervar) && itemRoom.equals(presentation.getRoom())) {
-                throw new CoincidesTimeException(errorMessageDateInUse);
+                throw new CoincidesTimeException(dateInUse);
             }
         }
         Presentation newPresentation = new Presentation(presentationName, startdate, enddate);
@@ -83,7 +79,7 @@ public class PresentationService {
             Interval itemInterval = new Interval(item.getStartdate().getTime(), item.getEnddate().getTime());
 
             if (itemInterval.overlaps(currentIntervar)) {
-                throw new CoincidesTimeException(errorMessageDateInUse);
+                throw new CoincidesTimeException(dateInUse);
             }
         }
         editPresentation.setNamepresentation(presentationName);
@@ -98,7 +94,7 @@ public class PresentationService {
         try {
             presentationRepository.deleteById(id);
         } catch (Exception e) {
-            throw new NotFoundException(errorMessageNotFound);
+            throw new NotFoundException(notFound);
         }
     }
 

@@ -1,7 +1,7 @@
 package com.example.conference.controller;
 
-import com.example.conference.myException.UserNameProblemException;
 import com.example.conference.entity.ROLE;
+import com.example.conference.exception.NotFoundException;
 import com.example.conference.service.PresentationService;
 import com.example.conference.service.RoomService;
 import com.example.conference.service.ScheduleService;
@@ -38,7 +38,7 @@ public class ScheduleController {
 
     @Secured({ROLE.ROLE_LISTENER, ROLE.ROLE_ADMIN, ROLE.ROLE_PRESENTER})
     @RequestMapping(value = {"/auditionRecord/{id}"}, method = RequestMethod.GET)
-    public String auditionRecord(@PathVariable("id") Long id) throws UserNameProblemException {
+    public String auditionRecord(@PathVariable("id") Long id) throws NotFoundException {
 
         scheduleService.audition(id);
         return "redirect:/schedule";

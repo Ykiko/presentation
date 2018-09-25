@@ -1,43 +1,40 @@
 package com.example.conference.service;
 
-import com.example.conference.myException.NoRoomException;
-import com.example.conference.myException.NotFoundException;
-import com.example.conference.myException.RoomException;
 import com.example.conference.entity.Room;
+import com.example.conference.exception.NoRoomException;
+import com.example.conference.exception.NotFoundException;
+import com.example.conference.exception.RoomException;
 import com.example.conference.repository.RoomRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
+@ConfigurationProperties(prefix = "error.message")
+@Data
 public class RoomService {
 
-    @Value("${error.message.roomInUse}")
-    private String errorMessageRoomInUse;
-    @Value("${error.message.roomIsRequired}")
-    private String errorMessageRoomIsRequired;
-    @Value("${error.message.notFound}")
-    private String errorMessageNotFound;
+    private final RoomRepository roomRepository;
 
-    private RoomRepository roomRepository;
+    private String roomInUse;
 
-    @Autowired
-    public RoomService(RoomRepository roomRepository) {
+    private String roomIsRequired;
 
-        this.roomRepository = roomRepository;
-    }
+    private String notFound;
 
     public void saveRoom(Room room) throws RoomException, NoRoomException {
         String nameroom = room.getRoom();
 
         if (nameroom.isEmpty()) {
-            throw new NoRoomException(errorMessageRoomIsRequired);
+            throw new NoRoomException(roomIsRequired);
         }
         for (Room item : roomRepository.findByRoom(nameroom)) {
 
             if (nameroom.equals(item.getRoom())) {
 
-                throw new RoomException(errorMessageRoomInUse);
+                throw new RoomException(roomInUse);
             }
         }
         Room newRoom = new Room(nameroom);
@@ -47,8 +44,8 @@ public class RoomService {
     public void deleteIdRoom(Long id) throws NotFoundException {
         try {
             roomRepository.deleteById(id);
-        } catch (Exception e){
-            throw new NotFoundException(errorMessageNotFound);
+        } catch (Exception e) {
+            throw new NotFoundException(notFound);
         }
     }
 

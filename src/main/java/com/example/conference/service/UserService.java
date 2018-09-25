@@ -1,11 +1,12 @@
 package com.example.conference.service;
 
-import com.example.conference.myException.NotFoundException;
-import com.example.conference.myException.UserNameProblemException;
 import com.example.conference.entity.User;
+import com.example.conference.exception.NotFoundException;
+import com.example.conference.exception.UserNameProblemException;
 import com.example.conference.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -13,23 +14,19 @@ import org.springframework.util.StringUtils;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+@ConfigurationProperties(prefix = "error.message")
+@Data
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final MailSend mailSend;
 
-    @Value("${error.message.userIsRequired}")
-    private String errorMessageUserIsRequired;
-    @Value("${error.message.loginInUse}")
-    private String errorMessageLoginInUse;
-    @Value("${error.message.notFound}")
-    private String errorMessageNotFound;
+    private String userIsRequired;
 
-    @Autowired
-    public UserService(UserRepository userRepository, MailSend mailSend) {
-        this.userRepository = userRepository;
-        this.mailSend = mailSend;
-    }
+    private String loginInUse;
+
+    private String notFound;
 
     public void saveUser(User user) throws UserNameProblemException {
 
@@ -41,14 +38,14 @@ public class UserService {
         String password = "{bcrypt}" + new BCryptPasswordEncoder().encode(user.getPassword());
 
         if (firstname.isEmpty() && lastname.isEmpty()) {
-            throw new UserNameProblemException(errorMessageUserIsRequired);
+            throw new UserNameProblemException(userIsRequired);
         }
 
         for (User item : userRepository.findAll()) {
 
             if (firstname.equals(item.getFirstname()) && lastname.equals(item.getLastname())) {
 
-                throw new UserNameProblemException(errorMessageLoginInUse);
+                throw new UserNameProblemException(loginInUse);
             }
         }
         User newUser = new User(firstname, lastname, age, email, username, password);
@@ -62,21 +59,19 @@ public class UserService {
         }
     }
 
-    public void updateSetUser(Long id, User user) {
-        Optional<User> editUser = userRepository.findById(id);
-        if (editUser.isPresent()) {
-            User currentUser = editUser.get();
-            user.setId(currentUser.getId());
-            user.setPassword(currentUser.getPassword());
-            userRepository.save(user);
-        }
+    public void updateSetUser(Long id, User user) throws NotFoundException {
+        User editUser = userRepository.findById(id).orElseThrow(NotFoundException::new);
+
+        user.setId(editUser.getId());
+        user.setPassword(editUser.getPassword());
+        userRepository.save(user);
     }
 
     public void deleteIdUser(Long id) throws NotFoundException {
         if (id != null) {
             userRepository.deleteById(id);
         } else {
-            throw new NotFoundException(errorMessageNotFound);
+            throw new NotFoundException(notFound);
         }
     }
 

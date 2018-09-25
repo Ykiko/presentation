@@ -1,8 +1,8 @@
 package com.example.conference.controller;
 
-import com.example.conference.myException.NoRoomException;
-import com.example.conference.myException.NotFoundException;
-import com.example.conference.myException.RoomException;
+import com.example.conference.exception.NoRoomException;
+import com.example.conference.exception.NotFoundException;
+import com.example.conference.exception.RoomException;
 import com.example.conference.entity.ROLE;
 import com.example.conference.entity.Room;
 import com.example.conference.service.RoomService;

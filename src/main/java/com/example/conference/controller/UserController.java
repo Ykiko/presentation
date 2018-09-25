@@ -1,7 +1,7 @@
 package com.example.conference.controller;
 
-import com.example.conference.myException.NotFoundException;
-import com.example.conference.myException.UserNameProblemException;
+import com.example.conference.exception.NotFoundException;
+import com.example.conference.exception.UserNameProblemException;
 import com.example.conference.entity.ROLE;
 import com.example.conference.entity.User;
 import com.example.conference.service.UserService;
@@ -59,7 +59,7 @@ public class UserController {
     @Secured(ROLE.ROLE_ADMIN)
     @RequestMapping(value = {"/updateUser/{id}"}, method = RequestMethod.POST)
     public String updateUser(@PathVariable("id") Long id,
-                           @ModelAttribute("user") User user) {
+                           @ModelAttribute("user") User user) throws NotFoundException {
         userService.updateSetUser(id, user);
         return "redirect:/listOfUser/" + user.getId();
     }

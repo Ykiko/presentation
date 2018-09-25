@@ -1,55 +1,31 @@
 package com.example.conference.service;
 
-import com.example.conference.myException.UserNameProblemException;
 import com.example.conference.entity.Presentation;
 import com.example.conference.entity.User;
+import com.example.conference.exception.NotFoundException;
 import com.example.conference.repository.PresentationRepository;
 import com.example.conference.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
+@RequiredArgsConstructor
 public class ScheduleService {
 
-    private PresentationRepository presentationRepository;
-    private UserRepository userRepository;
+    private final PresentationRepository presentationRepository;
+    private final UserRepository userRepository;
 
-    @Value("${error.message.userNotFound}")
-    private String errorMessageUserNotFound;
+    public void audition(Long id) throws NotFoundException {
 
-    public ScheduleService(PresentationRepository presentationRepository, UserRepository userRepository) {
-        this.presentationRepository = presentationRepository;
-        this.userRepository = userRepository;
-    }
-
-    public void audition(Long id) throws UserNameProblemException {
-
-        Optional<Presentation> schedule = presentationRepository.findById(id);
-        if (schedule.isPresent()) {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (principal instanceof UserDetails) {
-                String username = ((UserDetails) principal).getUsername();
-                Optional<User> userOptional = userRepository.findByUsername(username);
-                if (userOptional.isPresent()) {
-                    User user = userOptional.get();
-                    boolean checkListener = false;
-                    if (schedule.get().getListeners().contains(user)) {
-                        checkListener = true;
-                    }
-                    if (!checkListener) {
-                        schedule.ifPresent(schedule1 -> {
-                            schedule1.getListeners().add(user);
-                            presentationRepository.save(schedule1);
-                        });
-                    }
-                }
-            } else {
-                throw new UserNameProblemException(errorMessageUserNotFound);
-            }
+        Presentation schedule = presentationRepository.findById(id).orElseThrow(NotFoundException::new);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            User user = userRepository.findByUsername(username).orElseThrow(NotFoundException::new);
+            schedule.getListeners().add(user);
+            presentationRepository.save(schedule);
         }
     }
 }

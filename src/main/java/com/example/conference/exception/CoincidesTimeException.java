@@ -1,4 +1,4 @@
-package com.example.conference.myException;
+package com.example.conference.exception;
 
 import lombok.NoArgsConstructor;
 

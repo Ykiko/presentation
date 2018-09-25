@@ -1,6 +1,6 @@
 package com.example.conference.controller;
 
-import com.example.conference.myException.*;
+import com.example.conference.exception.*;
 import com.example.conference.entity.Presentation;
 import com.example.conference.entity.ROLE;
 import com.example.conference.service.PresentationService;
