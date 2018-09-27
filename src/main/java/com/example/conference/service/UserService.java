@@ -43,13 +43,12 @@ public class UserService {
             throw new UserNameProblemException(userIsRequired);
         }
 
-        for (User item : userRepository.findByFirstnameAndLastname(firstname, lastname)) {
-
-            if (firstname.equals(item.getFirstname()) && lastname.equals(item.getLastname())) {
-
-                throw new UserNameProblemException(nameAlreadyUsed);
-            }
+        if (userRepository.getByFirstnameAndLastname(firstname, lastname).isPresent()) {
+            throw new UserNameProblemException(nameAlreadyUsed);
         }
+//        for (User item : userRepository.findByFirstnameAndLastname(firstname, lastname)) {
+//            throw new UserNameProblemException(nameAlreadyUsed);
+//        }
         User newUser = new User(firstname, lastname, age, email, username, password);
         userRepository.save(newUser);
 
