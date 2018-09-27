@@ -30,13 +30,10 @@ public class RoomService {
         if (nameroom.isEmpty()) {
             throw new NoRoomException(roomIsRequired);
         }
-        for (Room item : roomRepository.findByRoom(nameroom)) {
-
-            if (nameroom.equals(item.getRoom())) {
-
-                throw new RoomException(roomInUse);
-            }
+        if (roomRepository.getByRoom(nameroom).isPresent()){
+            throw new RoomException(roomInUse);
         }
+
         Room newRoom = new Room(nameroom);
         roomRepository.save(newRoom);
     }
