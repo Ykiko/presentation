@@ -1,6 +1,5 @@
 package com.example.conference.service;
 
-import com.example.conference.NoNameException;
 import com.example.conference.entity.Presentation;
 import com.example.conference.repository.PresentationRepository;
 import com.example.conference.repository.RoomRepository;
@@ -15,9 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -42,7 +39,7 @@ class PresentationServiceTest {
     }
 
     @Test
-    void addPresentation() throws NoNameException {
+    void addPresentation() throws Exception {
         Presentation presentation = new Presentation("Algebra", new Date(), new Date());
         Presentation result = presentationService.addPresentation(presentation, 1L);
         assertEquals(result.getRoom().getId(), Long.valueOf(1L), "Error create.");
@@ -52,7 +49,7 @@ class PresentationServiceTest {
     @Test
     void addPresentation1() {
         Presentation presentation = new Presentation("Biology", new Date(), new Date());
-        Throwable exception = assertThrows(NoNameException.class,() -> {
+        Throwable exception = assertThrows(Exception.class,() -> {
             presentationService.addPresentation(presentation, 2L);
         });
         assertEquals("Error:Presentation is already in use!", exception.getMessage());
